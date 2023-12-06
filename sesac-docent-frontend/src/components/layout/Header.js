@@ -69,7 +69,6 @@ export const Header = () => {
               <Link
                 to="#"
                 className="flex justify-center items-center w-[168px] h-[55px] border border-black border-solid bg-yellow-200 hover:bg-black text-2xl font-bold text-black hover:text-white transition"
-                style={{}}
               >
                 전시 일정
               </Link>
