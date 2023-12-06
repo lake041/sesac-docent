@@ -29,7 +29,7 @@ export const Header = () => {
   }, []);
 
   return (
-    <div className="w-full flex flex-col items-center justify-center bg-white border-b border-black border-solid">
+    <div className="w-full flex flex-col items-center justify-center bg-white">
       <div className="w-full h-[36px] bg-zinc-200 flex justify-center ">
         <div className="w-full max-w-[1300px] flex justify-end items-center gap-4">
           <Link
