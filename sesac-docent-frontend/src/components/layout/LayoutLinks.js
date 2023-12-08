@@ -1,6 +1,8 @@
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import { IoMdPlay } from "react-icons/io";
 import { cn } from "../../utils/tailwind-merge";
+import { useContext } from "react";
+import { MenuContext } from "./AdminLayout";
 
 export const UpperHeaderLink = ({ link, text }) => {
   return (
@@ -46,5 +48,24 @@ export const FooterLink = ({ link, text }) => {
     <Link to={`${link}`} className="text-stone-100 text-lg font-semibold">
       {text}
     </Link>
+  );
+};
+
+export const SidebarLink = ({ link, text, icon }) => {
+  const { menuClicked } = useContext(MenuContext);
+
+  return (
+    <NavLink
+      to={`${link}`}
+      end
+      className={({ isActive }) =>
+        isActive
+          ? "h-12 p-4 px-6 text-zinc-500 flex items-center gap-3 text-lg font-medium hover:bg-zinc-200 transition cursor-pointer bg-zinc-200"
+          : "h-12 p-4 px-6 text-zinc-500 flex items-center gap-3 text-lg font-medium hover:bg-zinc-200 transition cursor-pointer"
+      }
+    >
+      {icon}
+      {!menuClicked && text}
+    </NavLink>
   );
 };

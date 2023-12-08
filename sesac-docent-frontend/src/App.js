@@ -6,10 +6,13 @@ import Register from "./pages/auth/Register";
 import RootLayout from "./components/layout/RootLayout";
 import AdminLayout from "./components/layout/AdminLayout";
 import AdminSupport from "./pages/admin/AdminSupport";
-import AdminBoard from "./pages/admin/AdminBoard";
-import AdminInfo from "./pages/admin/AdminInfo";
+import AdminPost from "./pages/admin/AdminPost";
+import AdminPiece from "./pages/admin/AdminPiece";
 import AdminHome from "./pages/admin/AdminHome";
 import AdminUser from "./pages/admin/AdminUser";
+import AdminExhibition from "./pages/admin/AdminExhibition";
+import AdminGallery from "./pages/admin/AdminGallery";
+import AdminArtist from "./pages/admin/AdminArtist";
 
 const router = createBrowserRouter([
   {
@@ -28,8 +31,11 @@ const router = createBrowserRouter([
       { index: true, element: <AdminHome /> },
       { path: "user", element: <AdminUser /> },
       { path: "support", element: <AdminSupport /> },
-      { path: "board", element: <AdminBoard /> },
-      { path: "info", element: <AdminInfo /> },
+      { path: "post", element: <AdminPost /> },
+      { path: "gallery", element: <AdminGallery /> },
+      { path: "exhibition", element: <AdminExhibition /> },
+      { path: "artist", element: <AdminArtist /> },
+      { path: "piece", element: <AdminPiece /> },
     ],
   },
 ]);

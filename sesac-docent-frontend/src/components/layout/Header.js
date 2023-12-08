@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
-import LogoSvg from "../../assets/logo_horizontal.svg";
-import { cn } from "../../utils/tailwind-merge";
 import { LinkBox, LowerHeaderLink, UpperHeaderLink } from "./LayoutLinks";
+import LogoSvg from "../../assets/logo_horizontal.svg";
+
+import { cn } from "../../utils/tailwind-merge";
 
 export const Header = () => {
   const [height, setHeight] = useState(100);
@@ -14,14 +15,9 @@ export const Header = () => {
       const scrollY = window.scrollY;
       requestAnimationFrame(() => {
         setHeight(Math.max(100 - scrollY * 1.1428, 60));
-        if (scrollY <= 35) {
-          setNavFixed(false);
-        } else {
-          setNavFixed(true);
-        }
+        setNavFixed(scrollY <= 35 ? false : true);
       });
     };
-
     window.addEventListener("scroll", handleScroll);
 
     return () => {
@@ -33,11 +29,11 @@ export const Header = () => {
     <div className="w-full flex flex-col items-center justify-center bg-white">
       <div className="w-full h-[36px] bg-zinc-200 flex justify-center ">
         <div className="w-full max-w-[1300px] flex justify-end items-center gap-4">
-          <UpperHeaderLink link="/admin" text="관리자" />
-          <UpperHeaderLink link="/myinfo" text="마이페이지" />
-          <UpperHeaderLink link="/logout" text="로그아웃" />
-          <UpperHeaderLink link="/register" text="회원가입" />
-          <UpperHeaderLink link="/login" text="로그인" />
+          {true && <UpperHeaderLink link="/admin" text="관리자" />}
+          {true && <UpperHeaderLink link="/myinfo" text="마이페이지" />}
+          {true && <UpperHeaderLink link="/logout" text="로그아웃" />}
+          {true && <UpperHeaderLink link="/register" text="회원가입" />}
+          {true && <UpperHeaderLink link="/login" text="로그인" />}
         </div>
       </div>
       <div
@@ -48,7 +44,7 @@ export const Header = () => {
       <div className={cn("w-full", navFixed && "fixed top-0")}>
         <div className="w-full min-h-[96px] bg-white flex justify-center border-b border-black border-solid">
           <div className="w-full max-w-[1300px] flex justify-between items-center mx-10">
-            <Link to="/" className="flex items-center my-4">
+            <Link to="/" className="flex items-center my-4 select-none">
               <img style={{ height }} src={LogoSvg} alt="The Hyundai Logo" />
             </Link>
             <div className="flex justify-between gap-4">
