@@ -52,17 +52,19 @@ export const HomeCardBox = ({ category }) => {
   return (
     <div
       className={cn(
-        "w-full flex flex-col border-b-2 border-black border-solid pt-16 pb-24 gap-12",
+        "w-full flex flex-col border-b-2 border-black border-solid pt-8 pb-20 gap-12",
         category === "reviews" ? " border-none" : "border-b-2"
       )}
     >
       <div className="flex justify-between items-center">
-        <p className="text-4xl font-medium">{titleMap[category]}</p>
+        <p className="text-5xl font-bold">{titleMap[category]}</p>
         <Link
           to="#"
           className="flex justify-center items-center gap-1 text-black hover:text-black/60 transition"
         >
-          <p className="text-lg font-normal">{titleMap[category]} 모두 보기</p>
+          <p className="text-xl font-semibold">
+            {titleMap[category]} 모두 보기
+          </p>
           <ChevronRight size={20} />
         </Link>
       </div>

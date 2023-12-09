@@ -8,7 +8,7 @@ export const UpperHeaderLink = ({ link, text }) => {
   return (
     <Link
       to={`${link}`}
-      className="flex justify-center items-center gap-1 w-fit"
+      className="flex justify-center items-center gap-1 w-fit font-semibold"
     >
       <IoMdPlay size={12} />
       {text}
@@ -36,7 +36,7 @@ export const LowerHeaderLink = ({ link, text }) => {
   return (
     <Link
       to={`${link}`}
-      className="hover:underline font-semibold xl:text-xl lg:text-lg md:text-base"
+      className="hover:underline font-bold xl:text-xl lg:text-lg md:text-base"
     >
       {text}
     </Link>
