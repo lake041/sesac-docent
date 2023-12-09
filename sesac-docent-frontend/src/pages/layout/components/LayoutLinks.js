@@ -1,8 +1,10 @@
+import { useContext } from "react";
 import { Link, NavLink } from "react-router-dom";
 import { IoMdPlay } from "react-icons/io";
-import { cn } from "../../utils/tailwind-merge";
-import { useContext } from "react";
-import { MenuContext } from "./AdminLayout";
+
+import { MenuContext } from "pages/layout/AdminLayout";
+
+import { cn } from "utils/tailwind-merge";
 
 export const UpperHeaderLink = ({ link, text }) => {
   return (

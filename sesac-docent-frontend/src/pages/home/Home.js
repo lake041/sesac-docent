@@ -1,5 +1,6 @@
-import HomeImage from "../../assets/home_fred_tokyo.jpeg";
-import { HomeCardBox } from "../../components/home-card-sections/HomeCardBox";
+import HomeImage from "assets/home_fred_tokyo.jpeg";
+
+import { HomeCardBox } from "./components/HomeCardBox";
 
 const Home = () => {
   return (

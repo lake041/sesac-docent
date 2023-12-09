@@ -3,9 +3,10 @@ import { Link } from "react-router-dom";
 import { Menu } from "lucide-react";
 
 import { UpperHeaderLink } from "./LayoutLinks";
-import { MenuContext } from "./AdminLayout";
-import LogoSvg from "../../assets/logo_horizontal.svg";
-import { cn } from "../../utils/tailwind-merge";
+import LogoSvg from "assets/logo_horizontal.svg";
+
+import { MenuContext } from "pages/layout/AdminLayout";
+import { cn } from "utils/tailwind-merge";
 
 export const AdminHeader = () => {
   const { menuClicked, menuClickHandler } = useContext(MenuContext);

@@ -2,9 +2,9 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
 import { LinkBox, LowerHeaderLink, UpperHeaderLink } from "./LayoutLinks";
-import LogoSvg from "../../assets/logo_horizontal.svg";
+import LogoSvg from "assets/logo_horizontal.svg";
 
-import { cn } from "../../utils/tailwind-merge";
+import { cn } from "utils/tailwind-merge";
 
 export const Header = () => {
   const [height, setHeight] = useState(95);

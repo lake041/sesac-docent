@@ -2,11 +2,11 @@ import { Link } from "react-router-dom";
 import { ChevronRight } from "lucide-react";
 
 import { HomeCardList } from "./HomeCardList";
-import DUMMY_CHUN from "../../assets/dummy_chun_01.jpeg";
-import DUMMY_KIM from "../../assets/dummy_kim_02.jpeg";
-import DUMMY_CHOI from "../../assets/dummy_choi_03.jpeg";
-import DUMMY_SHIM from "../../assets/dummy_shim_04.jpeg";
-import { cn } from "../../utils/tailwind-merge";
+import DUMMY_CHUN from "assets/dummy_chun_01.jpeg";
+import DUMMY_KIM from "assets/dummy_kim_02.jpeg";
+import DUMMY_CHOI from "assets/dummy_choi_03.jpeg";
+import DUMMY_SHIM from "assets/dummy_shim_04.jpeg";
+import { cn } from "utils/tailwind-merge";
 
 export const HomeCardBox = ({ category }) => {
   const cards = [];
