@@ -13,6 +13,7 @@ import AdminUser from "pages/admin/AdminUser";
 import AdminExhibition from "pages/admin/AdminExhibition";
 import AdminGallery from "pages/admin/AdminGallery";
 import AdminArtist from "pages/admin/AdminArtist";
+import Announcement from "pages/announcement/announcement"
 
 const router = createBrowserRouter([
   {
@@ -36,6 +37,7 @@ const router = createBrowserRouter([
       { path: "exhibition", element: <AdminExhibition /> },
       { path: "artist", element: <AdminArtist /> },
       { path: "piece", element: <AdminPiece /> },
+      { path: "notice", element: <Announcement /> },
     ],
   },
 ]);
