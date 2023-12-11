@@ -62,7 +62,7 @@ const MyInfo = () => {
     <div className="flex justify-center mt-24 mb-16">
       <div className="max-w-[1300px] flex justify-between">
         <div className="w-fit py-16 flex flex-col justify-center gap-8 mx-10">
-          <p className="w-fit text-7xl font-bold">마이페이지</p>
+          <p className="w-fit text-7xl font-bold">회원정보 수정</p>
           <form className="flex flex-col gap-4 w-fit sm:w-[350px] md:w-[400px] lg:w-[450px] xl:w-[500px] 2xl:w-[560px] border border-black p-4">
             <SignInput
               type="email"

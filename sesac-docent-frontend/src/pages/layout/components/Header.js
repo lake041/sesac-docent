@@ -34,7 +34,9 @@ export const Header = () => {
           {state.role === "ROLE_ADMIN" && (
             <UpperHeaderLink link="/admin" text="관리자" />
           )}
-          {state.email && <UpperHeaderLink link="/myinfo" text="마이페이지" />}
+          {state.email && (
+            <UpperHeaderLink link="/myinfo" text="회원정보 수정" />
+          )}
           {state.email && <UpperHeaderLink link="/" text="로그아웃" />}
           {!state.email && <UpperHeaderLink link="/register" text="회원가입" />}
           {!state.email && <UpperHeaderLink link="/login" text="로그인" />}
