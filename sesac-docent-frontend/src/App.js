@@ -14,6 +14,7 @@ import AdminGallery from "pages/admin/AdminGallery";
 import AdminArtist from "pages/admin/AdminArtist";
 import AdminInquiry from "pages/admin/AdminInquiry";
 import MyInfo from "pages/auth/MyInfo";
+import Notice from "pages/notice/announcement"
 import { Provider } from "react-redux";
 import { ReduxProvider } from "store/provider";
 
@@ -36,6 +37,7 @@ const router = createBrowserRouter([
       { path: "login", element: <Login /> },
       { path: "register", element: <Register /> },
       { path: "myinfo", element: <MyInfo /> },
+      { path: "notice", element: <Notice /> },
     ],
   },
   {
