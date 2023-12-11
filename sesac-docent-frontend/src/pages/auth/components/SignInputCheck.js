@@ -1,16 +1,41 @@
 import api from "apis/api";
+import axios from "axios";
 import { X } from "lucide-react";
+import { useState } from "react";
+import { validateEmail } from "utils/validate-input";
 
 export const SignInputCheck = (props) => {
+  const [unique, setUnique] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
   const isValid = props.inputState?.hasError ? "invalid" : "normal";
   const colorVariants = {
     normal: "flex items-center gap-1 text-2xl font-semibold text-black",
     invalid: "flex items-center gap-1 text-2xl font-semibold text-rose-700",
   };
 
-  const checkHandler = (event) => {
+  const checkHandler = async (event) => {
     event.preventDefault();
-    props.setEmailUnique(true);
+
+    if (!validateEmail(props.value)) {
+      return;
+    }
+
+    if (props.checkType === "emailUnique") {
+      const response = await axios.get(`/user/${props.value}`);
+      const isUnique = response.data.isUnique;
+
+      if (isUnique) {
+        setUnique(true);
+        setSubmitted(true);
+        props.setEmailUnique(true);
+        console.log("This email is unique.");
+      } else {
+        setUnique(false);
+        setSubmitted(true);
+        props.setEmailUnique(false);
+        console.log("This email is duplicated.");
+      }
+    }
   };
 
   return (
@@ -40,6 +65,16 @@ export const SignInputCheck = (props) => {
       {isValid === "invalid" && (
         <p className="text-lg font-medium text-rose-700">
           {props.errorMessage}
+        </p>
+      )}
+      {props.checkType === "emailUnique" && unique && submitted && (
+        <p className="text-lg font-medium text-teal-500">
+          사용할 수 있는 이메일입니다.
+        </p>
+      )}
+      {props.checkType === "emailUnique" && !unique && submitted && (
+        <p className="text-lg font-medium text-rose-500">
+          이미 가입된 이메일입니다.
         </p>
       )}
     </div>

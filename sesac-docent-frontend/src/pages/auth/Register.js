@@ -66,6 +66,7 @@ const Register = () => {
             <SignInputCheck
               type="email"
               checkType="emailUnique"
+              value={email.value}
               label="이메일 *"
               inputState={email}
               errorMessage="이메일 형식이 올바르지 않습니다."
@@ -73,8 +74,9 @@ const Register = () => {
             />
             {emailUnique && (
               <SignInputCheck
-                type="number"
+                type="authNumber"
                 checkType="authNumber"
+                value={authNumber.value}
                 label="인증번호 *"
                 inputState={authNumber}
                 errorMessage="인증번호 형식이 올바르지 않습니다."
