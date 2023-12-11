@@ -9,8 +9,8 @@ import lombok.ToString;
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter @Setter @ToString
-public class PasswordCheck {
-	
+public class PasswordChangeDTO {
 	private String email;
-	private String password;
+	private String oldPassword;
+    private String newPassword;
 }

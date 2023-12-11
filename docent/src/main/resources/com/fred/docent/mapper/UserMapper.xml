@@ -7,16 +7,10 @@
 		insert into users(user_id, email, password, user_name)
 		values(seq_users.NEXTVAL, #{email}, #{password}, #{username})
 	</insert>
-	
-<!-- 	<insert id="insertAuth">
-		insert into users(email) 
-		values(#{email})
-	</insert> -->
 
 	<!-- 중복 아이디 체크 -->
 	<select id="dupId" resultType="int">
-		select count(*) 
-		from users 
+		select count(*) from users 
 		where email=#{email}
 	</select>
 
@@ -28,17 +22,11 @@
 		<result property="userid" column="user_id"/>
 		<result property="username" column="user_name"/>
 		<result property="createdat" column="created_at"/>
-		<!-- <collection property="authorities" resultMap="authList"/> -->
+		<collection property="authorities" resultMap="authList"/>
 	</resultMap>
 	
-<!-- 	<resultMap type="com.project.movie.domain.MemberAuthDTO" id="authList">
-		<result property="userid" column="userid"/>
-		<result property="authority" column="authority"/>
-	</resultMap>	 -->
-	
 	<select id="read" resultMap="userDTO">
-		select *
-		from users
+		select * from users
 		where email = #{email}
 	</select>
 	
@@ -50,7 +38,8 @@
 
 	<!-- 회원탈퇴 -->
 	<delete id="delete">
-		delete from users where email=#{email}
+		delete from users 
+		where email=#{email}
 	</delete>
 
 	<!-- 회원정보 수정 -->

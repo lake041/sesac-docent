@@ -25,5 +25,8 @@
 	
 	<context:component-scan base-package="com.fred.docent" />
 	
+	<!-- @PreAuthorize 활성화 -->
+	<!-- <security:global-method-security pre-post-annotations="enabled"/> -->
+	
 	
 </beans:beans>

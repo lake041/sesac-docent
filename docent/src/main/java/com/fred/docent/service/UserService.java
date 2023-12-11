@@ -18,12 +18,19 @@ import com.fred.docent.mapper.UserMapper;
 @Transactional
 public class UserService {
 
-	@Autowired
 	private UserMapper mapper;
+	private BCryptPasswordEncoder encoder;
+	
+	@Autowired
+	public UserService(UserMapper mapper, BCryptPasswordEncoder encoder) {
+        this.mapper = mapper;
+        this.encoder = encoder;
+    }
 
 	public boolean insert(UserDTO userDTO) throws Exception {
+		userDTO.setPassword(encoder.encode(userDTO.getPassword()));
+		
 		boolean flag = mapper.insert(userDTO) == 1;
-//		mapper.insert(userDTO.getEmail());
 		return flag;
 	}
 
