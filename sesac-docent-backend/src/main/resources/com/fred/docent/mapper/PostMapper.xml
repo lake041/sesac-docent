@@ -5,15 +5,19 @@
 
 	<insert id="insertPost"
 		parameterType="com.fred.docent.domain.InsertPostDTO">
-		CALL insert_post(
-		#{user_Id, jdbcType=NUMERIC},
-		#{exhibition_Id, jdbcType=NUMERIC},
-		#{category, jdbcType=NUMERIC},
-		#{title, jdbcType=VARCHAR},
-		#{content, jdbcType=CLOB},
-		#{reply_Id,
+		begin
+		insert_post(
+		#{postDTO.user_Id, jdbcType=NUMERIC},
+		#{postDTO.exhibition_Id, jdbcType=NUMERIC},
+		#{postDTO.category,
+		jdbcType=NUMERIC},
+		#{postDTO.title, jdbcType=VARCHAR},
+		#{postDTO.content,
+		jdbcType=CLOB},
+		#{postDTO.reply_Id,
 		jdbcType=NUMERIC}
 		)
+		end;
 	</insert>
 
 	<!-- Result Map 정의 -->
@@ -34,7 +38,8 @@
 		parameterType="com.fred.docent.domain.FetchPostsRequestDTO"
 		resultMap="PostResultMap">
 		SELECT * FROM TABLE(fetch_posts(
-		#{requestDTO.p_category, jdbcType=NUMERIC},
+		#{requestDTO.p_category,
+		jdbcType=NUMERIC},
 		#{requestDTO.p_page_size, jdbcType=NUMERIC},
 		#{requestDTO.p_page_number, jdbcType=NUMERIC},
 		#{requestDTO.p_search_title, jdbcType=VARCHAR}
@@ -50,10 +55,20 @@
 	<select id="fetchPostDetails"
 		parameterType="com.fred.docent.domain.FetchPostDetailsRequestDTO"
 		resultType="com.fred.docent.domain.FetchPostDetailsResponseDTO">
-		CALL fetch_post_details(
-		#{post_Id, jdbcType=NUMERIC},
-		#{category, jdbcType=NUMERIC}
-		)
+		<choose>
+			<when test="requestDTO.category == 1">
+				SELECT * FROM TABLE(fetch_post_details_cat1(#{requestDTO.post_Id, jdbcType=NUMERIC}))
+			</when>
+			<when test="requestDTO.category == 2">
+				SELECT * FROM TABLE(fetch_post_details_cat2(#{requestDTO.post_Id, jdbcType=NUMERIC}))
+			</when>
+			<when test="requestDTO.category == 3">
+				SELECT * FROM TABLE(fetch_post_details_cat3(#{requestDTO.post_Id, jdbcType=NUMERIC}))
+			</when>
+			<otherwise>
+				
+			</otherwise>
+		</choose>
 	</select>
 
 </mapper>
