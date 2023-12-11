@@ -31,10 +31,8 @@ const Login = () => {
       email: email.value,
       password: password.value,
     });
-    const name = response.data.username;
-    const authority = response.data.authority;
-    console.log({ email: email.value, name, role: authority });
-    dispatch(login({ email: email.value, name, role: authority }));
+    const { username: name, authority: role } = response.data;
+    dispatch(login({ email: email.value, name, role }));
     if (!response?.error) {
       navigate("/");
     } else {
@@ -70,23 +68,20 @@ const Login = () => {
               <SignError message="아이디 또는 비밀번호를 다시 입력해주세요." />
             )}
             <div className="mt-3 w-full flex gap-4">
-              <Link to="#" className="hover:underline">
-                아이디 찾기
-              </Link>
-              <Link to="#" className="hover:underline">
+              <Link to="/findPassword" className="hover:underline">
                 비밀번호 찾기
               </Link>
             </div>
             <div className="flex gap-4">
               <button
                 onClick={submitHandler}
-                className="w-fit h-fit px-4 py-2 border border-black text-lg font-bold"
+                className="w-fit h-fit px-4 py-2 border border-black text-lg font-bold hover:bg-black hover:text-white transition"
               >
                 로그인
               </button>
               <Link
                 to="/register"
-                className="w-fit h-fit px-4 py-2 border border-black text-lg font-bold"
+                className="w-fit h-fit px-4 py-2 border border-black text-lg font-bold hover:bg-black hover:text-white transition"
               >
                 회원가입
               </Link>

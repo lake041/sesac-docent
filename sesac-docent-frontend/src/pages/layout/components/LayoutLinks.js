@@ -7,16 +7,25 @@ import { MenuContext } from "pages/layout/AdminLayout";
 import { cn } from "utils/tailwind-merge";
 import { useDispatch } from "react-redux";
 import { logout } from "store/features/auth-slice";
+import api from "apis/api";
 
 export const UpperHeaderLink = ({ link, text }) => {
   const dispatch = useDispatch();
 
-  const logoutHandler = () => {
+  const logoutHandler = async () => {
     if (text !== "로그아웃") {
       return;
     }
-    console.log(1);
-    dispatch(logout());
+
+    const response = await api.get("/user/logout");
+    if (response.data.message === "Logout Success") {
+      console.log(response.data.message);
+      document.cookie =
+        "JSESSIONID=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+      dispatch(logout());
+    } else {
+      console.log(response.data.message);
+    }
   };
 
   return (

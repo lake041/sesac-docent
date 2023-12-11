@@ -24,8 +24,6 @@ const Register = () => {
   const confirm = useInput((value) => validateConfirm(value, password.value));
   const userName = useInput(validateNickname);
   const [isValid, setIsValid] = useState(true);
-  const [isDuplicated, setIsDuplicated] = useState(false);
-  const [errorMessage, setErrorMessage] = useState("");
   const [emailUnique, setEmailUnique] = useState(false);
   const [serverAuthNumber, setServerAuthNumber] = useState("");
   const [authNumberValid, setAuthNumberValid] = useState(false);
@@ -35,7 +33,6 @@ const Register = () => {
     const valid =
       email.isValid && password.isValid && confirm.isValid && userName.isValid;
     setIsValid(valid);
-    setIsDuplicated(false);
 
     if (!valid) {
       return;
@@ -98,11 +95,10 @@ const Register = () => {
               errorMessage="2~16자의 한글을 올바르게 입력해 주세요."
             />
             {!isValid && <SignError message="입력값을 다시 확인해주세요." />}
-            {isDuplicated && <SignError message={errorMessage} />}
             <div className="flex gap-4 justify-end">
               <button
                 onClick={submitHandler}
-                className="w-fit h-fit px-4 py-2 border border-black text-lg font-bold"
+                className="w-fit h-fit px-4 py-2 border border-black text-lg font-bold hover:bg-black hover:text-white transition"
               >
                 회원가입
               </button>

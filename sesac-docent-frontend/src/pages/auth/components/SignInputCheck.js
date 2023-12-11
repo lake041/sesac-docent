@@ -1,5 +1,4 @@
 import api from "apis/api";
-import axios from "axios";
 import { X } from "lucide-react";
 import { useState } from "react";
 import { validateEmail } from "utils/validate-input";
@@ -7,7 +6,6 @@ import { validateEmail } from "utils/validate-input";
 export const SignInputCheck = (props) => {
   const [unique, setUnique] = useState(false);
   const [submitted, setSubmitted] = useState(false);
-  const [myAuthNumber, setMyAuthNumber] = useState("");
   const isValid = props.inputState?.hasError ? "invalid" : "normal";
   const colorVariants = {
     normal: "flex items-center gap-1 text-2xl font-semibold text-black",
@@ -21,12 +19,7 @@ export const SignInputCheck = (props) => {
       if (!validateEmail(props.value)) {
         return;
       }
-      const response = await axios.get(`/user/${props.value}`, {
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-        },
-      });
+      const response = await api.get(`/user/${props.value}`);
       const isUnique = response.data.isUnique;
 
       if (isUnique) {
