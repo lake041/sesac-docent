@@ -51,7 +51,7 @@ public class UserController {
 
 		String email = dto.getEmail();
 
-		// 중복아이디 검사
+		// 중복이메일 검사
 		if (!service.dupId(email)) {
 			Map<String, String> response = new HashMap<>();
 			response.put("errorCode", "email");
@@ -62,21 +62,20 @@ public class UserController {
 					.header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_UTF8_VALUE).body(json);
 		}
 
-		// 이메일 인증
-//	    String authCode = mailCheck(email);
-//	    if (authCode == null || !authCode.equals(dto.getAuthCode())) {
-//	        Map<String, String> response = new HashMap<>();
-//	        response.put("errorCode", "auth");
-//	        response.put("errorMessage", "이메일 인증이 실패하였습니다.");
-//	        ObjectMapper objectMapper = new ObjectMapper();
-//	        String json = objectMapper.writeValueAsString(response);
-//	        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-//	                .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_UTF8_VALUE).body(json);
-//	    }
-
 		service.insert(dto);
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
+	
+	@GetMapping("/{email}")
+    public ResponseEntity<Object> dupIdCheck(@PathVariable String email) {
+        boolean idCheck = service.dupId(email);
+        
+        if (idCheck) {
+            return ResponseEntity.ok(true);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(false);
+        }
+    }
 
 	@GetMapping("/mailCheck/{email:.+}")
 	@ResponseBody
@@ -121,23 +120,30 @@ public class UserController {
 
 	// 로그인
 	@PostMapping("/login")
-	public ResponseEntity<String> login(@RequestBody LoginDTO loginDTO, HttpSession session) {
+	public ResponseEntity<Map<String, Object>> login(@RequestBody LoginDTO loginDTO, HttpSession session) {
 	    log.info("로그인 요청 " + loginDTO);
 
 	    // 입력받은 이메일과 비밀번호로 DB에서 사용자 정보를 가져옵니다.
 	    UserDTO userDTO = service.readUserByEmail(loginDTO.getEmail());
 
+	    Map<String, Object> response = new HashMap<>();
 	    if (userDTO != null && encoder.matches(loginDTO.getPassword(), userDTO.getPassword())) {
 	        // 이메일과 비밀번호가 일치하는 경우, 로그인 성공 처리를 합니다.
 	        session.setAttribute("userDTO", userDTO);
 
-	        // 로그인 성공 시 홈페이지로 리다이렉트합니다.
-	        return ResponseEntity.ok("{\"message\": \"Success\"}");
+	        // 로그인 성공 시 사용자의 권한 정보를 함께 응답 본문에 포함시킵니다.
+	        response.put("message", "Success");
+	        response.put("authorities", userDTO.getAuthorities()); // 사용자의 권한 정보
+	        response.put("username", userDTO.getUsername()); // 사용자의 username
+
+	        return ResponseEntity.ok(response);
 	    } else {
 	        // 이메일과 비밀번호가 일치하지 않는 경우, 로그인 실패 처리를 합니다.
-	        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("{\"message\": \"Failed\"}");
+	        response.put("message", "Failed");
+	        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
 	    }
 	}
+
 
 	// 로그인 에러
 	@GetMapping("/login-error")

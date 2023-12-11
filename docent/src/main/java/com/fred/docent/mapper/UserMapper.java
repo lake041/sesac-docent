@@ -8,9 +8,7 @@ public interface UserMapper {
 	// 회원가입
 	public int insert(UserDTO userDTO);
 
-	//public int insertAuth(String email);
-
-	// 비밀번호 변경
+	// 회원정보(비밀번호) 수정
 	public void update(UserDTO userDTO) throws Exception;
 
 	// 회원탈퇴
@@ -23,6 +21,6 @@ public interface UserMapper {
 	
 	public UserDTO checkUser(@Param("username") String username, @Param("email") String email);
 	
-	public UserDTO read(String email); // 시큐리티 관련
+	public UserDTO read(String email); // 회원 정보 읽어오기
 
 }

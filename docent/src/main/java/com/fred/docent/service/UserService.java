@@ -34,8 +34,8 @@ public class UserService {
 		return flag;
 	}
 
-	public boolean dupId(String userid) {
-		return mapper.dupId(userid) == 0 ? true : false;
+	public boolean dupId(String email) {
+		return mapper.dupId(email) == 0 ? true : false;
 	}
 
 	public void delete(UserDTO userDTO) {
