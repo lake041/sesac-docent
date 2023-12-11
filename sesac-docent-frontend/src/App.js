@@ -18,7 +18,6 @@ import { ReduxProvider } from "store/provider";
 import FindPassword from "pages/auth/FindPassword";
 
 const adminRoutes = [
-  { name: "inquiry", component: <AdminInquiry /> },
   { name: "user", component: <AdminUser /> },
   { name: "post", component: <AdminPost /> },
   { name: "gallery", component: <AdminGallery /> },
@@ -44,6 +43,13 @@ const router = createBrowserRouter([
     element: <AdminLayout />,
     children: [
       { index: true, element: <AdminHome /> },
+      {
+        path: "inquiry",
+        element: <AdminInquiry />,
+        children: [
+          { path: ":inqCate/page/:pageNumber", element: <AdminInquiry /> },
+        ],
+      },
       ...adminRoutes.map(({ name, component }) => ({
         path: name,
         element: component,
@@ -61,7 +67,7 @@ const router = createBrowserRouter([
 const App = () => {
   return (
     <ReduxProvider>
-      <RouterProvider router={router} />;
+      <RouterProvider router={router} />
     </ReduxProvider>
   );
 };
