@@ -6,6 +6,7 @@ import {
   validatePassword,
   validateConfirm,
   validateNickname,
+  validateAuthNumber,
 } from "utils/validate-input";
 import { useInput } from "hooks/use-input";
 import api from "apis/api";
@@ -18,7 +19,7 @@ import { SignInputCheck } from "./components/SignInputCheck";
 const Register = () => {
   const navigate = useNavigate();
   const email = useInput(validateEmail);
-  const authNumber = useInput(validateEmail);
+  const authNumber = useInput(validateAuthNumber);
   const password = useInput(validatePassword);
   const confirm = useInput((value) => validateConfirm(value, password.value));
   const userName = useInput(validateNickname);
@@ -26,6 +27,7 @@ const Register = () => {
   const [isDuplicated, setIsDuplicated] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [emailUnique, setEmailUnique] = useState(false);
+  const [serverAuthNumber, setServerAuthNumber] = useState("");
   const [authNumberValid, setAuthNumberValid] = useState(false);
 
   const submitHandler = async (event) => {
@@ -39,22 +41,13 @@ const Register = () => {
       return;
     }
 
-    const response = await api.post("/auth/register", {
-      email,
-      password,
-      userName,
+    await api.post("/user/insert", {
+      email: email.value,
+      password: password.value,
+      username: userName.value,
     });
-    if (response.data.message === "success") {
-      navigate.push("/login");
-    } else {
-      if (response.data.errorCode === "email")
-        setErrorMessage("이미 존재하는 이메일입니다.");
-      if (response.data.errorCode === "name")
-        setErrorMessage("이미 존재하는 이름입니다.");
-      setIsDuplicated(true);
-      setIsValid(false);
-    }
-    console.log(response.data.message);
+
+    navigate("/login");
   };
 
   return (
@@ -71,6 +64,7 @@ const Register = () => {
               inputState={email}
               errorMessage="이메일 형식이 올바르지 않습니다."
               setEmailUnique={setEmailUnique}
+              setServerAuthNumber={setServerAuthNumber}
             />
             {emailUnique && (
               <SignInputCheck
@@ -80,7 +74,9 @@ const Register = () => {
                 label="인증번호 *"
                 inputState={authNumber}
                 errorMessage="인증번호 형식이 올바르지 않습니다."
+                serverAuthNumber={serverAuthNumber}
                 setAuthNumberValid={setAuthNumberValid}
+                authNumberValid={authNumberValid}
               />
             )}
             <SignInput

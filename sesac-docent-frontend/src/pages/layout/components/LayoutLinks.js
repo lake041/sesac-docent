@@ -5,12 +5,25 @@ import { IoMdPlay } from "react-icons/io";
 import { MenuContext } from "pages/layout/AdminLayout";
 
 import { cn } from "utils/tailwind-merge";
+import { useDispatch } from "react-redux";
+import { logout } from "store/features/auth-slice";
 
 export const UpperHeaderLink = ({ link, text }) => {
+  const dispatch = useDispatch();
+
+  const logoutHandler = () => {
+    if (text !== "로그아웃") {
+      return;
+    }
+    console.log(1);
+    dispatch(logout());
+  };
+
   return (
     <Link
       to={`${link}`}
       className="flex justify-center items-center gap-1 w-fit font-semibold"
+      onClick={logoutHandler}
     >
       <IoMdPlay size={12} />
       {text}

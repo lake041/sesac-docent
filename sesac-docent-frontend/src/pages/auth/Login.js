@@ -27,16 +27,20 @@ const Login = () => {
       return;
     }
 
-    dispatch(login({ email: email.value }));
-    navigate("/");
-
-    // const response = await api.post("/auth/login", { email, password });
-    // if (!response?.error) {
-    //   navigate.push("/");
-    // } else {
-    //   console.log("Login Failed.");
-    //   setIsValid(false);
-    // }
+    const response = await api.post("/user/login", {
+      email: email.value,
+      password: password.value,
+    });
+    const name = response.data.username;
+    const authority = response.data.authority;
+    console.log({ email: email.value, name, role: authority });
+    dispatch(login({ email: email.value, name, role: authority }));
+    if (!response?.error) {
+      navigate("/");
+    } else {
+      console.log("Login Failed.");
+      setIsValid(false);
+    }
   };
 
   return (

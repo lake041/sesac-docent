@@ -5,7 +5,7 @@ import { useAppSelector } from "store/store";
 
 const Home = () => {
   const state = useAppSelector((state) => state.authReducer);
-  console.log(state.email);
+  console.log(state.email, state.name, state.role);
 
   return (
     <div className="w-full">
