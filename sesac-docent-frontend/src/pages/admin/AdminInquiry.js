@@ -8,6 +8,7 @@ import { PostsTableHead } from "./components/PostsTableHead";
 import { PostsRow } from "./components/PostsTableRow";
 import api from "apis/api";
 import { cn } from "utils/tailwind-merge";
+import { IoMdQrScanner } from "react-icons/io";
 
 const pageGroupSize = 10;
 const pageSize = 10;
@@ -71,7 +72,7 @@ const AdminInquiry = () => {
 
     const fetchPosts = async () => {
       const response = await api.get(
-        `/posts/list/3/${pageSize}/${pageNumberParams}`
+        `/posts/list/3/${pageSize}/${pageNumberParams}?p_post_status=${inqCateParams}`
       );
 
       const updatedPosts = response.data.map((post) => {
