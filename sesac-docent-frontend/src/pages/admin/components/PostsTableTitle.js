@@ -1,4 +1,4 @@
-import { Search } from "lucide-react";
+// import { Search } from "lucide-react";
 
 export const PostsTableTitle = ({ title, buttonName }) => {
   return (

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Link, NavLink, useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { DUMMY_POST } from "./components/DUMMY_POST";
 import { PostsTableTitle } from "./components/PostsTableTitle";
 import { Search, Trash2 } from "lucide-react";
@@ -9,16 +9,24 @@ import { PostsRow } from "./components/PostsTableRow";
 import api from "apis/api";
 import { cn } from "utils/tailwind-merge";
 
-const pagesPerGroup = 10;
-const postsPerPage = 10;
+const pageGroupSize = 10;
+const pageSize = 10;
 const type = "inquiry";
 const title = "1:1 문의 관리";
+
+const CATEGORY_MAP = {
+  inquiry: 3,
+};
 
 const AdminInquiry = () => {
   const navigate = useNavigate();
   const params = useParams();
   const inqCateParams = params.inqCate;
   const pageNumberParams = params.pageNumber;
+
+  console.log(CATEGORY_MAP);
+  console.log(inqCateParams);
+  console.log(CATEGORY_MAP[inqCateParams]);
 
   useEffect(() => {
     if (!pageNumberParams || pageNumberParams < 0) {
@@ -35,15 +43,17 @@ const AdminInquiry = () => {
   const [pageGroup, setPageGroup] = useState([]);
 
   useEffect(() => {
+    setCheckedPosts([]);
+    setAllChecked(false);
     setCurrentPage(pageNumberParams);
 
     const currentPageStart =
-      pageNumberParams % pagesPerGroup === 0
-        ? pageNumberParams - pagesPerGroup + 1
-        : pageNumberParams - (pageNumberParams % pagesPerGroup) + 1;
+      pageNumberParams % pageGroupSize === 0
+        ? pageNumberParams - pageGroupSize + 1
+        : pageNumberParams - (pageNumberParams % pageGroupSize) + 1;
 
     const currentPageEnd = Math.min(
-      currentPageStart + pagesPerGroup - 1,
+      currentPageStart + pageGroupSize - 1,
       totalPages
     );
 
@@ -60,15 +70,40 @@ const AdminInquiry = () => {
     // console.log(currentPageGroup);
   }, [pageNumberParams, totalPages]);
 
-  // useEffect(() => {
-  //   const fetchPosts = async () => {
-  //     const response = await api.get(
-  //       `/admin/inquiry/${inqCate}/page/${pageNumber}`
-  //     );
-  //     setPosts(response.data.posts);
-  //   };
-  //   fetchPosts();
-  // }, [inqCate, pageNumber]);
+  useEffect(() => {
+    if (!pageNumberParams) {
+      return;
+    }
+
+    setCurrentPage(pageNumberParams);
+
+    const fetchPosts = async () => {
+      const response = await api.get(
+        `/posts/list/3/${pageSize}/${pageNumberParams}`
+      );
+
+      const updatedPosts = response.data.map((post) => {
+        const timestamp = post.v_post_updated_at;
+        const date = new Date(timestamp);
+
+        const year = date.getFullYear();
+        const month = (date.getMonth() + 1).toString().padStart(2, "0");
+        const day = date.getDate().toString().padStart(2, "0");
+        const hours = date.getHours().toString().padStart(2, "0");
+        const minutes = date.getMinutes().toString().padStart(2, "0");
+        const seconds = date.getSeconds().toString().padStart(2, "0");
+
+        return {
+          ...post,
+          v_post_updated_at: `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`,
+        };
+      });
+
+      setPosts(updatedPosts);
+    };
+
+    fetchPosts();
+  }, [inqCateParams, pageNumberParams]);
 
   const checkboxClickHandler = (id) => {
     setCheckedPosts(
@@ -84,29 +119,20 @@ const AdminInquiry = () => {
   };
 
   const handleNextPageGroup = () => {
-    const newPage = pageStart + pagesPerGroup;
+    const newPage = pageStart + pageGroupSize;
     navigate(`/admin/${type}/${inqCateParams}/page/${newPage}`);
   };
 
   const handlePrevPageGroup = () => {
-    const newPage = pageStart - pagesPerGroup;
+    const newPage = pageStart - pageGroupSize;
     navigate(`/admin/${type}/${inqCateParams}/page/${newPage}`);
   };
-
-  useEffect(() => {
-    setPosts(DUMMY_POST);
-    setTotalPages(Math.ceil(1210 / postsPerPage));
-  }, []);
-
-  useEffect(() => {
-    setCurrentPage(pageNumberParams);
-  }, [inqCateParams, pageNumberParams]);
 
   return (
     <div className="w-full h-full flex justify-center items-start p-5">
       <div className="w-full h-full px-10 py-5 rounded-xl bg-white flex flex-col justify-start items-center gap-4">
         <PostsTableTitle title={title} />
-        <div className="flex gap-12 text-xl text-zinc-400 font-light">
+        <div className="flex gap-12 text-lg text-zinc-400 font-light">
           <Link
             to="/admin/inquiry/new/page/1"
             className={`p-2 ${
@@ -167,12 +193,12 @@ const AdminInquiry = () => {
             <tbody>
               {posts.map((post) => (
                 <PostsRow
-                  key={post.id}
-                  id={post.id}
-                  status={post.status}
-                  name={post.name}
-                  title={post.title}
-                  date={post.date}
+                  key={post.v_post_id}
+                  id={post.v_post_rank}
+                  status="활성"
+                  name={post.v_user_name}
+                  title={post.v_post_title}
+                  date={post.v_post_updated_at}
                   checkboxClickHandler={checkboxClickHandler}
                   allChecked={allChecked}
                 />
@@ -220,7 +246,7 @@ const AdminInquiry = () => {
                 </Link>
               );
             })}
-            {pageStart + pagesPerGroup < totalPages && (
+            {pageStart + pageGroupSize < totalPages && (
               <button onClick={handleNextPageGroup} className="hover:underline">
                 다음
               </button>
