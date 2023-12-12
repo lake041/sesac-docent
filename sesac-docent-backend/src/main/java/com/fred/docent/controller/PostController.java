@@ -19,6 +19,7 @@ import com.fred.docent.domain.FetchPostDetailsResponseDTO;
 import com.fred.docent.domain.FetchPostsRequestDTO;
 import com.fred.docent.domain.FetchPostsResponseDTO;
 import com.fred.docent.domain.InsertPostDTO;
+import com.fred.docent.domain.UpdatePostDTO;
 import com.fred.docent.service.PostsService;
 
 import lombok.extern.log4j.Log4j;
@@ -40,6 +41,20 @@ public class PostController {
         postsService.insertPost(postDTO);
         return new ResponseEntity<>("Post inserted successfully", HttpStatus.OK);
     }
+    
+    @PostMapping(value = "/update", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<String> updatePost(@RequestBody UpdatePostDTO postDTO) {
+        postsService.updatePost(postDTO);
+        return new ResponseEntity<>("Post updated successfully", HttpStatus.OK);
+    }
+    
+    @PostMapping(value = "/delete", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<String> deletePost(@RequestBody UpdatePostDTO postDTO) {
+        postsService.deletePost(postDTO);
+        return new ResponseEntity<>("Post delete successfully", HttpStatus.OK);
+    }
+    
+    
 
     @GetMapping(value = "/list/{p_category}/{p_page_size}/{p_page_number}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<FetchPostsResponseDTO>> fetchPosts(
