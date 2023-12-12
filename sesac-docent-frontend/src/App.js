@@ -16,6 +16,7 @@ import AdminInquiry from "pages/admin/AdminInquiry";
 import MyInfo from "pages/auth/MyInfo";
 import { ReduxProvider } from "store/provider";
 import FindPassword from "pages/auth/FindPassword";
+import NoticeBoard from "pages/board/NoticeBoard";
 
 const adminRoutes = [
   { name: "user", component: <AdminUser /> },
@@ -36,6 +37,7 @@ const router = createBrowserRouter([
       { path: "register", element: <Register /> },
       { path: "myinfo", element: <MyInfo /> },
       { path: "findPassword", element: <FindPassword /> },
+      { path: "notice", element: <NoticeBoard /> },
     ],
   },
   {

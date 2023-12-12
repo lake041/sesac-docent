@@ -14,19 +14,11 @@ const pageSize = 10;
 const type = "inquiry";
 const title = "1:1 문의 관리";
 
-const CATEGORY_MAP = {
-  inquiry: 3,
-};
-
 const AdminInquiry = () => {
   const navigate = useNavigate();
   const params = useParams();
   const inqCateParams = params.inqCate;
   const pageNumberParams = params.pageNumber;
-
-  console.log(CATEGORY_MAP);
-  console.log(inqCateParams);
-  console.log(CATEGORY_MAP[inqCateParams]);
 
   useEffect(() => {
     if (!pageNumberParams || pageNumberParams < 0) {

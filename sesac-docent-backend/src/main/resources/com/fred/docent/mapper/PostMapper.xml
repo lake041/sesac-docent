@@ -16,16 +16,30 @@
 		)
 	</insert>
 
-	<select id="fetchPosts"
-		parameterType="com.fred.docent.domain.FetchPostsRequestDTO"
-		resultType="com.fred.docent.domain.FetchPostsResponseDTO">
-		CALL fetch_posts(
-		#{requestDTO.category, jdbcType=NUMERIC},
-		#{requestDTO.page_Size, jdbcType=NUMERIC},
-		#{requestDTO.page_Number, jdbcType=NUMERIC},
-		#{requestDTO.search_Title, jdbcType=VARCHAR}
-		)
-	</select>
+<!-- Result Map 정의 -->
+   <resultMap id="PostResultMap"
+      type="com.fred.docent.domain.FetchPostsResponseDTO">
+      <result property="v_post_rank" column="post_rank" />
+      <result property="v_post_id" column="post_id" />
+      <result property="v_post_title" column="post_title" />
+      <result property="v_post_views" column="post_views" />
+      <result property="v_post_updated_at" column="post_updated_at" />
+      <result property="v_user_id" column="user_id" />
+      <result property="v_user_name" column="user_name" />
+      <result property="v_post_likes" column="post_likes" />
+   </resultMap>
+
+   <!-- fetchPosts 수정 -->
+   <select id="fetchPosts"
+      parameterType="com.fred.docent.domain.FetchPostsRequestDTO"
+      resultMap="PostResultMap">
+      SELECT * FROM TABLE(fetch_posts(
+      #{requestDTO.p_category, jdbcType=NUMERIC},
+      #{requestDTO.p_page_size, jdbcType=NUMERIC},
+      #{requestDTO.p_page_number, jdbcType=NUMERIC},
+      #{requestDTO.p_search_title, jdbcType=VARCHAR}
+      ))
+   </select>
 
 	<select id="fetchPostDetails"
 		parameterType="com.fred.docent.domain.FetchPostDetailsRequestDTO"
