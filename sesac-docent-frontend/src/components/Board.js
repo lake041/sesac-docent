@@ -113,7 +113,7 @@ export const Board = ({ title, category }) => {
 
   return (
     <div className="w-full h-full flex justify-center items-start p-5 my-20">
-      <div className="w-full max-w-[1300px] h-full px-10 py-5 rounded-xl bg-white flex flex-col justify-start items-center gap-4">
+      <div className="w-full max-w-[1300px] h-full px-10 py-5 rounded-xl bg-white flex flex-col justify-start items-center gap-6">
         <div className="w-full flex justify-between items-end">
           <p className="w-1/5 text-start"></p>
           <p className="w-3/5 text-center text-4xl font-semibold">{title}</p>
@@ -168,7 +168,7 @@ export const Board = ({ title, category }) => {
             </tbody>
           </table>
         </div>
-        <div className="w-full flex justify-between items-center gap-4 mt-4 pr-4">
+        <div className="w-full flex justify-between items-center gap-4 mt-2 pr-4">
           <div className="h-12 flex justify-center items-center gap-4 p-4">
             <select id="searchType" className="h-10 border border-black p-2">
               <option value="title">제목</option>
