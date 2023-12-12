@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.fred.docent.domain.FetchArtCollectionResponseDTO;
 import com.fred.docent.domain.FetchPostDetailsRequestDTO;
 import com.fred.docent.domain.FetchPostDetailsResponseDTO;
 import com.fred.docent.domain.FetchPostsRequestDTO;
@@ -29,57 +30,65 @@ import lombok.extern.log4j.Log4j;
 @Log4j
 public class PostController {
 
-    private final PostsService postsService;
+	private final PostsService postsService;
 
-    @Autowired
-    public PostController(PostsService postsService) {
-        this.postsService = postsService;
-    }
+	@Autowired
+	public PostController(PostsService postsService) {
+		this.postsService = postsService;
+	}
 
-    @PostMapping(value = "/insert", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> insertPost(@RequestBody InsertPostDTO postDTO) {
-        postsService.insertPost(postDTO);
-        return new ResponseEntity<>("Post inserted successfully", HttpStatus.OK);
-    }
-    
-    @PostMapping(value = "/update", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> updatePost(@RequestBody UpdatePostDTO postDTO) {
-        postsService.updatePost(postDTO);
-        return new ResponseEntity<>("Post updated successfully", HttpStatus.OK);
-    }
-    
-    @PostMapping(value = "/delete", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> deletePost(@RequestBody UpdatePostDTO postDTO) {
-        postsService.deletePost(postDTO);
-        return new ResponseEntity<>("Post delete successfully", HttpStatus.OK);
-    }
-    
-    
+	@PostMapping(value = "/insert", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<String> insertPost(@RequestBody InsertPostDTO postDTO) {
+		postsService.insertPost(postDTO);
+		return new ResponseEntity<>("Post inserted successfully", HttpStatus.OK);
+	}
 
-    @GetMapping(value = "/list/{p_category}/{p_page_size}/{p_page_number}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<FetchPostsResponseDTO>> fetchPosts(
-            @PathVariable("p_category") int category,
-            @PathVariable("p_page_size") int pageSize,
-            @PathVariable("p_page_number") int pageNumber,
-            @RequestParam(value = "p_search_title", required = false) String searchTitle,
-            @RequestParam(value = "p_post_status", required = false) String postStatus) {
+	@PostMapping(value = "/update", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<String> updatePost(@RequestBody UpdatePostDTO postDTO) {
+		postsService.updatePost(postDTO);
+		return new ResponseEntity<>("Post updated successfully", HttpStatus.OK);
+	}
 
-        FetchPostsRequestDTO requestDTO = new FetchPostsRequestDTO(category, pageSize, pageNumber, searchTitle, postStatus);
-        List<FetchPostsResponseDTO> postsResponse = postsService.fetchPosts(requestDTO);
-        return new ResponseEntity<>(postsResponse, HttpStatus.OK);
-    }
+	@PostMapping(value = "/delete", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<String> deletePost(@RequestBody UpdatePostDTO postDTO) {
+		postsService.deletePost(postDTO);
+		return new ResponseEntity<>("Post delete successfully", HttpStatus.OK);
+	}
 
-    @GetMapping(value = "/details/{postId}/{category}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<FetchPostDetailsResponseDTO> fetchPostDetails(
-            @PathVariable("postId") Long postId,
-            @PathVariable("category") Integer category) {
+	@GetMapping(value = "/list/{p_category}/{p_page_size}/{p_page_number}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<List<FetchPostsResponseDTO>> fetchPosts(@PathVariable("p_category") int category,
+			@PathVariable("p_page_size") int pageSize, @PathVariable("p_page_number") int pageNumber,
+			@RequestParam(value = "p_search_title", required = false) String searchTitle,
+			@RequestParam(value = "p_post_status", required = false) String postStatus) {
 
-        FetchPostDetailsRequestDTO requestDTO = new FetchPostDetailsRequestDTO(postId, category);
-        FetchPostDetailsResponseDTO postDetails = postsService.fetchPostDetails(requestDTO);
-        if (postDetails != null) {
-            return new ResponseEntity<>(postDetails, HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-    }
+		FetchPostsRequestDTO requestDTO = FetchPostsRequestDTO.builder().p_category(category).p_page_size(pageSize)
+				.p_page_number(pageNumber).p_search_title(searchTitle).p_post_status(postStatus).build();
+//        = new FetchPostsRequestDTO.builder()(category, pageSize, pageNumber, searchTitle, postStatus);
+		List<FetchPostsResponseDTO> postsResponse = postsService.fetchPosts(requestDTO);
+		return new ResponseEntity<>(postsResponse, HttpStatus.OK);
+	}
+
+	@GetMapping(value = "/details/{postId}/{category}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<FetchPostDetailsResponseDTO> fetchPostDetails(@PathVariable("postId") Long postId,
+			@PathVariable("category") Integer category) {
+
+		FetchPostDetailsRequestDTO requestDTO = new FetchPostDetailsRequestDTO(postId, category);
+		FetchPostDetailsResponseDTO postDetails = postsService.fetchPostDetails(requestDTO);
+		if (postDetails != null) {
+			return new ResponseEntity<>(postDetails, HttpStatus.OK);
+		} else {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+	}
+
+	@GetMapping(value = "/list2/{table_name}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<List<FetchArtCollectionResponseDTO>> fetchArtCollections(
+
+			@PathVariable("table_name") String tablename) {
+		FetchPostsRequestDTO requestDTO = FetchPostsRequestDTO.builder().table_name(tablename).build();
+		List<FetchArtCollectionResponseDTO> postsResponse = postsService.fetchArtCollections(requestDTO);
+		return new ResponseEntity<>(postsResponse, HttpStatus.OK);
+
+	}
+
 }

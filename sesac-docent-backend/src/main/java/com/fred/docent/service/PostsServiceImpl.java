@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.fred.docent.domain.FetchArtCollectionResponseDTO;
 import com.fred.docent.domain.FetchPostDetailsRequestDTO;
 import com.fred.docent.domain.FetchPostDetailsResponseDTO;
 import com.fred.docent.domain.FetchPostsRequestDTO;
@@ -54,5 +55,11 @@ public class PostsServiceImpl implements PostsService {
 	public FetchPostDetailsResponseDTO fetchPostDetails(FetchPostDetailsRequestDTO requestDTO) {
 		log.info("Fetching post details for post ID: " + requestDTO.getPost_Id());
 		return postMapper.fetchPostDetails(requestDTO);
+	}
+
+	@Override
+	public List<FetchArtCollectionResponseDTO> fetchArtCollections(FetchPostsRequestDTO requestDTO) {
+		log.info("Fetching posts with request: " + requestDTO);
+		return postMapper.fetchArtCollections(requestDTO);
 	}
 }

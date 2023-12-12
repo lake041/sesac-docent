@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import com.fred.docent.domain.FetchArtCollectionResponseDTO;
 import com.fred.docent.domain.FetchPostDetailsRequestDTO;
 import com.fred.docent.domain.FetchPostDetailsResponseDTO;
 import com.fred.docent.domain.FetchPostsRequestDTO;
@@ -24,4 +25,6 @@ public interface PostMapper {
 	List<FetchPostsResponseDTO> fetchPosts(@Param("requestDTO") FetchPostsRequestDTO requestDTO);
 
 	FetchPostDetailsResponseDTO fetchPostDetails(@Param("requestDTO") FetchPostDetailsRequestDTO requestDTO);
+	
+	List<FetchArtCollectionResponseDTO> fetchArtCollections(@Param("requestDTO") FetchPostsRequestDTO requestDTO);
 }

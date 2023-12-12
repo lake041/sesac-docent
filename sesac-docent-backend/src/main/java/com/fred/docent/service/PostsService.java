@@ -2,6 +2,7 @@ package com.fred.docent.service;
 
 import java.util.List;
 
+import com.fred.docent.domain.FetchArtCollectionResponseDTO;
 import com.fred.docent.domain.FetchPostDetailsRequestDTO;
 import com.fred.docent.domain.FetchPostDetailsResponseDTO;
 import com.fred.docent.domain.FetchPostsRequestDTO;
@@ -20,4 +21,6 @@ public interface PostsService {
 	List<FetchPostsResponseDTO> fetchPosts(FetchPostsRequestDTO requestDTO);
 
 	FetchPostDetailsResponseDTO fetchPostDetails(FetchPostDetailsRequestDTO requestDTO);
+	
+	List<FetchArtCollectionResponseDTO> fetchArtCollections(FetchPostsRequestDTO requestDTO);
 }
