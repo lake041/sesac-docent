@@ -10,4 +10,5 @@ public class FetchPostsRequestDTO {
 	private Integer p_page_size;
 	private Integer p_page_number;
 	private String p_search_title;
+	private String p_post_status;
 }

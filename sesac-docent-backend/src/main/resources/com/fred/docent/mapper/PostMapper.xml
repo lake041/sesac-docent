@@ -31,6 +31,7 @@
 		<result property="v_user_id" column="user_id" />
 		<result property="v_user_name" column="user_name" />
 		<result property="v_post_likes" column="post_likes" />
+		<result property="v_last_page" column="post_last_page" />
 	</resultMap>
 
 	<!-- fetchPosts 수정 -->
@@ -42,7 +43,8 @@
 		jdbcType=NUMERIC},
 		#{requestDTO.p_page_size, jdbcType=NUMERIC},
 		#{requestDTO.p_page_number, jdbcType=NUMERIC},
-		#{requestDTO.p_search_title, jdbcType=VARCHAR}
+		#{requestDTO.p_search_title, jdbcType=VARCHAR},
+		#{requestDTO.p_post_status, jdbcType=VARCHAR}
 		))
 	</select>
 

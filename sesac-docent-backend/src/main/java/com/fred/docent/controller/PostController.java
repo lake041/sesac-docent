@@ -46,9 +46,10 @@ public class PostController {
             @PathVariable("p_category") int category,
             @PathVariable("p_page_size") int pageSize,
             @PathVariable("p_page_number") int pageNumber,
-            @RequestParam(value = "p_search_title", required = false) String searchTitle) {
+            @RequestParam(value = "p_search_title", required = false) String searchTitle,
+            @RequestParam(value = "p_post_status", required = false) String postStatus) {
 
-        FetchPostsRequestDTO requestDTO = new FetchPostsRequestDTO(category, pageSize, pageNumber, searchTitle);
+        FetchPostsRequestDTO requestDTO = new FetchPostsRequestDTO(category, pageSize, pageNumber, searchTitle, postStatus);
         List<FetchPostsResponseDTO> postsResponse = postsService.fetchPosts(requestDTO);
         return new ResponseEntity<>(postsResponse, HttpStatus.OK);
     }
