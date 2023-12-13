@@ -4,15 +4,26 @@ import sanitize from "dompurify";
 import api from "apis/api";
 import { DUMMY_REPLY } from "./DUMMY_REPLY";
 import { Reply } from "./Reply";
+import { useAppSelector } from "store/store";
 
 export const Post = () => {
   const [data, setData] = useState();
   const [sortType, setSortType] = useState("popular");
+  const [like, setLike] = useState(false);
+  const [newReply, setNewReply] = useState("");
   const params = useParams();
   const postId = params.postId;
   const location = useLocation();
   const categoryENG = location.state && location.state.categoryENG;
   const categoryKOR = location.state && location.state.categoryKOR;
+
+  const state = useAppSelector((state) => state.authReducer);
+
+  useEffect(() => {
+    (async () => {
+      setLike(true);
+    })();
+  }, []);
 
   // useEffect(() => {
   //   (async () => {
@@ -20,6 +31,26 @@ export const Post = () => {
   //     setData(response.data);
   //   })();
   // }, [categoryENG, postId]);
+
+  const heartClickHandler = () => {
+    setLike(!like);
+  };
+
+  const submitHandler = (event) => {
+    event.preventDefault();
+    console.log(newReply);
+  };
+
+  // const submitHandler = (event) => {
+  //   event.preventDefault();
+  //   console.log(newReply);
+  //   async () => {
+  //     const response = await api.post("/posts/insert", {
+  //       category: 5,
+  //       username: state.name.
+  //     });
+  //   };
+  // };
 
   return (
     <div className="w-full h-full flex flex-col justify-center items-center p-5 my-20 gap-4">
@@ -104,7 +135,7 @@ export const Post = () => {
               content={reply.content}
               date={reply.date}
               like={true}
-              likeCount="72"
+              likeCountProps={72}
               myLike={true}
             />
           ))}
@@ -112,23 +143,30 @@ export const Post = () => {
       </div>
       {/* reply write 영역 */}
       <div className="w-full max-w-[1000px] px-10 py-5 flex justify-center">
-        <div className="w-full max-w-[1000px] p-5 border border-black flex flex-col gap-4">
+        <form
+          className="w-full max-w-[1000px] p-5 border border-black flex flex-col gap-4"
+          onSubmit={submitHandler}
+        >
           <div className="flex justify-between items-center">
             <label htmlFor="newReply" className="text-lg font-semibold pl-2">
               새 댓글
             </label>
-            <button className="w-fit h-fit px-4 py-2 border border-black text-lg font-bold hover:bg-black hover:text-white transition">
+            <button
+              type="submit"
+              className="w-fit h-fit px-4 py-2 border border-black text-lg font-bold hover:bg-black hover:text-white transition"
+            >
               입력
             </button>
           </div>
           <textarea
             name="newReply"
             className="w-full p-5 h-40 border border-zinc-300"
-            //   value="하이요"
             placeholder="댓글을 작성하려면 로그인해주세요."
+            value={newReply}
+            onChange={(event) => setNewReply(event.target.value)}
           ></textarea>
           <div className="flex justify-end"></div>
-        </div>
+        </form>
       </div>
     </div>
   );

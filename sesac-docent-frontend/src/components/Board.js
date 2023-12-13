@@ -8,7 +8,7 @@ import { cn } from "utils/tailwind-merge";
 const pageGroupSize = 10;
 const pageSize = 10;
 
-export const Board = ({ categoryKOR, categoryENG }) => {
+export const Board = ({ categoryKOR, categoryENG, admin }) => {
   const navigate = useNavigate();
   const params = useParams();
   const pageNumberParams = params.pageNumber;
@@ -17,7 +17,9 @@ export const Board = ({ categoryKOR, categoryENG }) => {
   // http://localhost:3000/notice/page/1 리다이렉트
   useEffect(() => {
     if (!pageNumberParams || pageNumberParams < 0) {
-      navigate(`${categoryENG}/page/1`);
+      admin
+        ? navigate(`/admin/${categoryENG}/page/1`)
+        : navigate(`/${categoryENG}/page/1`);
     }
   }, [navigate, pageNumberParams, categoryENG]);
 
