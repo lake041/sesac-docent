@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { useLocation, useParams } from "react-router-dom";
-import sanitize from "dompurify";
 import api from "apis/api";
 import { Heart, HeartOff } from "lucide-react";
 
@@ -9,11 +8,13 @@ export const Reply = ({
   username,
   content,
   date,
-  like,
-  likeCount,
+  // like,
+  likeCountProps,
   myLike,
 }) => {
-  const [data, setData] = useState();
+  const [data, setData] = useState(null);
+  const [like, setLike] = useState(false);
+  const [likeCount, setLikeCount] = useState(likeCountProps);
   const params = useParams();
   const postId = params.postId;
   const location = useLocation();
@@ -21,7 +22,13 @@ export const Reply = ({
   const categoryKOR = location.state && location.state.categoryKOR;
 
   const heartClickHandler = () => {
-    console.log("heart clicked");
+    if (like === true) {
+      setLike(false);
+      setLikeCount(likeCount - 1);
+    } else {
+      setLike(true);
+      setLikeCount(likeCount + 1);
+    }
   };
 
   return (
@@ -32,18 +39,18 @@ export const Reply = ({
             {/* 댓글 헤더 */}
             <div className="flex flex-col justify-center gap-2 text-sm">
               <div className="flex items-center gap-3">
-                <div className="w-fit h-fit p-1 px-2 border border-black text-base hover:bg-black hover:text-white transition">
-                  <p>댓글 1</p>
+                <div className="w-fit h-fit p-1 px-2 border border-black text-base hover:bg-black hover:text-white transition cursor-pointer">
+                  <p>댓글</p>
                 </div>
                 <p className="text-xl font-semibold">{username}</p>
               </div>
               <p className="text-zinc-500">{date}</p>
             </div>
-            <button
+            {/* <button
               className="flex gap-2 items-center"
               onClick={heartClickHandler}
             >
-              {myLike ? (
+              {like ? (
                 <Heart
                   size={30}
                   fill="rgb(239, 68, 68)"
@@ -53,7 +60,7 @@ export const Reply = ({
                 <Heart size={30} />
               )}
               <p className="text-lg">{likeCount}</p>
-            </button>
+            </button> */}
           </div>
           <p className="text-lg">{content}</p>
         </div>

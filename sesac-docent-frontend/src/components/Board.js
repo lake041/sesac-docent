@@ -1,31 +1,45 @@
 import { useEffect, useState } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import {
+  Link,
+  useNavigate,
+  useParams,
+  useSearchParams,
+} from "react-router-dom";
 import { Search } from "lucide-react";
 
 import api from "apis/api";
 import { cn } from "utils/tailwind-merge";
+import { useAppSelector } from "store/store";
+import { numberToDate } from "utils/format-date";
+import { searchPosts } from "apis/requests";
 
 const pageGroupSize = 10;
 const pageSize = 10;
 
-export const Board = ({ categoryKOR, categoryENG }) => {
+export const Board = ({ categoryKOR, categoryENG, categoryNUM, admin }) => {
   const navigate = useNavigate();
   const params = useParams();
   const pageNumberParams = params.pageNumber;
+
+  const state = useAppSelector((state) => state.authReducer);
 
   // http://localhost:3000/notice 접속 시
   // http://localhost:3000/notice/page/1 리다이렉트
   useEffect(() => {
     if (!pageNumberParams || pageNumberParams < 0) {
-      navigate(`${categoryENG}/page/1`);
+      admin
+        ? navigate(`/admin/${categoryENG}/page/1`)
+        : navigate(`/${categoryENG}/page/1`);
     }
-  }, [navigate, pageNumberParams, categoryENG]);
+  }, [navigate, pageNumberParams, categoryENG, admin]);
 
   const [posts, setPosts] = useState([]);
   const [lastPage, setLastPage] = useState(120);
   const [pageStart, setPageStart] = useState(1);
   const [currentPage, setCurrentPage] = useState(1);
   const [pageGroup, setPageGroup] = useState([]);
+  const [searchCriteria, setSearchCriteria] = useState("");
+  const [searchParams, setSearchParams] = useSearchParams();
 
   useEffect(() => {
     setCurrentPage(pageNumberParams);
@@ -58,30 +72,45 @@ export const Board = ({ categoryKOR, categoryENG }) => {
       return;
     }
 
+    if (searchParams.get("search")) {
+      const func = async () => {
+        const data = await searchPosts(
+          parseInt(categoryNUM),
+          pageSize,
+          1,
+          searchCriteria
+        );
+        const updatedData = data.map((post) => {
+          return {
+            ...post,
+            v_post_updated_at: numberToDate(post.v_post_updated_at),
+          };
+        });
+        setLastPage(updatedData[0].v_last_page);
+        setPosts(updatedData);
+      };
+
+      func();
+      return;
+    }
+
+    setCurrentPage(pageNumberParams);
+
     // 즉시 실행 함수
     (async () => {
       // REST API
       const response = await api.get(
-        `/posts/list/1/${pageSize}/${pageNumberParams}`
+        `/posts/list/${categoryNUM}/${pageSize}/${pageNumberParams}`
       );
 
       // 날짜 포맷 변환
       const updatedPosts = response.data.map((post) => {
-        const timestamp = post.v_post_updated_at;
-        const date = new Date(timestamp);
-
-        const year = date.getFullYear();
-        const month = (date.getMonth() + 1).toString().padStart(2, "0");
-        const day = date.getDate().toString().padStart(2, "0");
-        const hours = date.getHours().toString().padStart(2, "0");
-        const minutes = date.getMinutes().toString().padStart(2, "0");
-        const seconds = date.getSeconds().toString().padStart(2, "0");
-
         return {
           ...post,
-          v_post_updated_at: `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`,
+          v_post_updated_at: numberToDate(post.v_post_updated_at),
         };
       });
+      console.log(updatedPosts);
 
       // 현재 페이지 posts 설정
       setLastPage(updatedPosts[0].v_last_page);
@@ -89,7 +118,7 @@ export const Board = ({ categoryKOR, categoryENG }) => {
     })();
 
     // 페이지가 바뀔 때마다 수행
-  }, [pageNumberParams]);
+  }, [pageNumberParams, categoryNUM, searchParams]);
 
   // 다음 페이지
   const handleNextPageGroup = () => {
@@ -113,6 +142,27 @@ export const Board = ({ categoryKOR, categoryENG }) => {
     navigate(`/${categoryENG}/write`);
   };
 
+  const searchValueHandler = (event) => {
+    setSearchCriteria(event.target.value);
+  };
+
+  const searchHandler = async (event) => {
+    event.preventDefault();
+    navigate(
+      admin
+        ? `/admin/${categoryENG}/page/1?search=${searchCriteria}`
+        : `/${categoryENG}/page/1?search=${searchCriteria}`
+    );
+  };
+
+  const postClickHandler = (postId) => {
+    navigate(`/${categoryENG}/post/${postId}`);
+  };
+
+  const showWrite =
+    (categoryENG !== "notice" && state.role) ||
+    (categoryENG === "notice" && state.role === "ROLE_ADMIN");
+
   return (
     <div className="w-full h-full flex justify-center items-start p-5 my-20">
       <div className="w-full max-w-[1300px] h-full px-10 py-5 rounded-xl bg-white flex flex-col justify-start items-center gap-6">
@@ -122,12 +172,14 @@ export const Board = ({ categoryKOR, categoryENG }) => {
             {categoryKOR}
           </p>
           <div className="w-1/5 flex justify-end">
-            <button
-              className="w-fit h-fit px-4 py-2 border border-black text-lg font-bold hover:bg-black hover:text-white transition"
-              onClick={writeClickHandler}
-            >
-              글쓰기
-            </button>
+            {showWrite && (
+              <button
+                className="w-fit h-fit px-4 py-2 border border-black text-lg font-bold hover:bg-black hover:text-white transition"
+                onClick={writeClickHandler}
+              >
+                글쓰기
+              </button>
+            )}
           </div>
         </div>
         <div className="w-full flex flex-col relative">
@@ -166,7 +218,7 @@ export const Board = ({ categoryKOR, categoryENG }) => {
                     {post.v_user_name}
                   </td>
                   <td className="py-2 px-4">{post.v_post_title}</td>
-                  <td className="py-2 px-4">{post.v_post_content}</td>
+                  <td className="py-2 px-4">{post.v_post_updated_at}</td>
                 </tr>
               ))}
             </tbody>
@@ -180,13 +232,16 @@ export const Board = ({ categoryKOR, categoryENG }) => {
               <option value="name">글쓴이</option>
             </select>
             <div className="flex gap-2">
-              <input
-                type="text"
-                className="h-10 border-b border-black p-1 px-4"
-              />
-              <button>
-                <Search />
-              </button>
+              <form onSubmit={searchHandler}>
+                <input
+                  type="text"
+                  className="h-10 border-b border-black p-1 px-4"
+                  onChange={searchValueHandler}
+                />
+                <button type="submit">
+                  <Search />
+                </button>
+              </form>
             </div>
           </div>
           <div className="flex gap-5 text-xl w-fit">
@@ -202,7 +257,11 @@ export const Board = ({ categoryKOR, categoryENG }) => {
               return (
                 <Link
                   key={pageNumber}
-                  to={`/${categoryENG}/page/${pageNumber}`}
+                  to={`/${categoryENG}/page/${pageNumber}${
+                    searchParams.get("search")
+                      ? `?search=${searchParams.get("search")}`
+                      : ""
+                  }`}
                   className={cn(
                     "text-xl hover:underline",
                     isCurrentPage && "font-semibold text-teal-600 underline"

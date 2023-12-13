@@ -1,13 +1,5 @@
 import { useContext } from "react";
-import {
-  Brush,
-  Image,
-  Landmark,
-  Layout,
-  Presentation,
-  ScrollText,
-  SquareUserRound,
-} from "lucide-react";
+import { Brush, Image, Landmark, Layout, Presentation } from "lucide-react";
 
 import { SidebarLink } from "pages/layout/components/LayoutLinks";
 import { MenuContext } from "pages/layout/AdminLayout";
@@ -39,23 +31,7 @@ export const AdminSidebar = () => {
           <img src={BabyGroot} alt="Baby Groot" className="h-full" />
         </div>
       </div>
-      {/* <SidebarLink link="/admin" text="대시보드" icon={<Layout />} /> */}
-      <SidebarLink
-        link="/admin/inquiry"
-        text="1:1 문의"
-        icon={<Layout />}
-        // icon={<HelpCircle />}
-      />
-      <SidebarLink
-        link="/admin/user"
-        text="회원 관리"
-        icon={<SquareUserRound />}
-      />
-      <SidebarLink
-        link="/admin/post"
-        text="게시물 관리"
-        icon={<ScrollText />}
-      />
+      <SidebarLink link="/admin/inquiry" text="1:1 문의" icon={<Layout />} />
       <SidebarLink link="/admin/gallery" text="공간 관리" icon={<Landmark />} />
       <SidebarLink
         link="/admin/exhibition"
@@ -63,7 +39,7 @@ export const AdminSidebar = () => {
         icon={<Presentation />}
       />
       <SidebarLink link="/admin/artist" text="작가 관리" icon={<Brush />} />
-      <SidebarLink link="/admin/piece" text="작품 관리" icon={<Image />} />
+      <SidebarLink link="/admin/artwork" text="작품 관리" icon={<Image />} />
     </div>
   );
 };
