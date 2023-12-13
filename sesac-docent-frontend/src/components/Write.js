@@ -39,7 +39,7 @@ export const Write = ({ categoryENG, categoryKOR }) => {
           {categoryKOR}
         </p>
         <div className="w-full flex flex-col max-w-[1000px]">
-          <div className="quill-container w-full flex flex-col gap-4">
+          <div className="w-full flex flex-col gap-4">
             <div className="w-full flex gap-2">
               <label
                 htmlFor="title"

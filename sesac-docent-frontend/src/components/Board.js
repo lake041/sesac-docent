@@ -8,7 +8,7 @@ import { cn } from "utils/tailwind-merge";
 const pageGroupSize = 10;
 const pageSize = 10;
 
-export const Board = ({ title, category }) => {
+export const Board = ({ categoryKOR, categoryENG }) => {
   const navigate = useNavigate();
   const params = useParams();
   const pageNumberParams = params.pageNumber;
@@ -17,9 +17,9 @@ export const Board = ({ title, category }) => {
   // http://localhost:3000/notice/page/1 리다이렉트
   useEffect(() => {
     if (!pageNumberParams || pageNumberParams < 0) {
-      navigate(`${category}/page/1`);
+      navigate(`${categoryENG}/page/1`);
     }
-  }, [navigate, pageNumberParams, category]);
+  }, [navigate, pageNumberParams, categoryENG]);
 
   const [posts, setPosts] = useState([]);
   const [lastPage, setLastPage] = useState(120);
@@ -94,21 +94,23 @@ export const Board = ({ title, category }) => {
   // 다음 페이지
   const handleNextPageGroup = () => {
     const newPage = pageStart + pageGroupSize;
-    navigate(`${category}/page/${newPage}`);
+    navigate(`/${categoryENG}/page/${newPage}`);
   };
 
   // 이전 페이지
   const handlePrevPageGroup = () => {
     const newPage = pageStart - pageGroupSize;
-    navigate(`${category}/page/${newPage}`);
+    navigate(`/${categoryENG}/page/${newPage}`);
   };
 
-  const rowClickHandler = () => {
-    console.log(1);
+  const rowClickHandler = (postId) => {
+    navigate(`/${categoryENG}/post/${postId}`, {
+      state: { categoryENG, categoryKOR },
+    });
   };
 
   const writeClickHandler = () => {
-    navigate(`/${category}/write`);
+    navigate(`/${categoryENG}/write`);
   };
 
   return (
@@ -116,7 +118,9 @@ export const Board = ({ title, category }) => {
       <div className="w-full max-w-[1300px] h-full px-10 py-5 rounded-xl bg-white flex flex-col justify-start items-center gap-6">
         <div className="w-full flex justify-between items-end">
           <p className="w-1/5 text-start"></p>
-          <p className="w-3/5 text-center text-4xl font-semibold">{title}</p>
+          <p className="w-3/5 text-center text-4xl font-semibold">
+            {categoryKOR}
+          </p>
           <div className="w-1/5 flex justify-end">
             <button
               className="w-fit h-fit px-4 py-2 border border-black text-lg font-bold hover:bg-black hover:text-white transition"
@@ -155,7 +159,7 @@ export const Board = ({ title, category }) => {
                 <tr
                   key={post.v_post_id}
                   className="py-2 px-4 border-b border-zinc-400 cursor-pointer hover:bg-zinc-100 transition"
-                  onClick={rowClickHandler}
+                  onClick={() => rowClickHandler(post.v_post_id)}
                 >
                   <td className="py-2 px-4">{post.v_post_rank}</td>
                   <td className="py-2 px-4 font-medium text-teal-500">
@@ -198,7 +202,7 @@ export const Board = ({ title, category }) => {
               return (
                 <Link
                   key={pageNumber}
-                  to={`/${category}/page/${pageNumber}`}
+                  to={`/${categoryENG}/page/${pageNumber}`}
                   className={cn(
                     "text-xl hover:underline",
                     isCurrentPage && "font-semibold text-teal-600 underline"
