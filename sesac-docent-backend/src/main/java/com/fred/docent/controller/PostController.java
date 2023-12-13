@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.fred.docent.domain.DeletePostsDTO;
 import com.fred.docent.domain.FetchArtCollectionResponseDTO;
 import com.fred.docent.domain.FetchPostDetailsRequestDTO;
 import com.fred.docent.domain.FetchPostDetailsResponseDTO;
@@ -50,7 +51,7 @@ public class PostController {
 	}
 
 	@PostMapping(value = "/delete", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<String> deletePost(@RequestBody UpdatePostDTO postDTO) {
+	public ResponseEntity<String> deletePost(@RequestBody DeletePostsDTO postDTO) {
 		postsService.deletePost(postDTO);
 		return new ResponseEntity<>("Post delete successfully", HttpStatus.OK);
 	}
@@ -83,13 +84,20 @@ public class PostController {
 
 	@GetMapping(value = "/listup/{p_table_name}/{p_page_size}/{p_page_number}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<FetchArtCollectionResponseDTO>> fetchArtCollections(
-			@PathVariable("p_table_name") String tablename, @PathVariable("p_page_size") int pageSize,
-			@PathVariable("p_page_number") int pageNumber) {
-		FetchPostsRequestDTO requestDTO = FetchPostsRequestDTO.builder().p_table_name(tablename).p_page_size(pageSize)
-				.p_page_number(pageNumber).build();
-		List<FetchArtCollectionResponseDTO> postsResponse = postsService.fetchArtCollections(requestDTO);
-		return new ResponseEntity<>(postsResponse, HttpStatus.OK);
-
+	        @PathVariable("p_table_name") String tablename, 
+	        @PathVariable("p_page_size") int pageSize,
+	        @PathVariable("p_page_number") int pageNumber,
+	        @RequestParam(required = false) String searchTitle) {
+	    
+	    FetchPostsRequestDTO requestDTO = FetchPostsRequestDTO.builder()
+	            .p_table_name(tablename)
+	            .p_page_size(pageSize)
+	            .p_page_number(pageNumber)
+	            .p_search_title(searchTitle)
+	            .build();
+	    List<FetchArtCollectionResponseDTO> postsResponse = postsService.fetchArtCollections(requestDTO);
+	    return new ResponseEntity<>(postsResponse, HttpStatus.OK);
 	}
+
 
 }

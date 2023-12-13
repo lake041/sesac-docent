@@ -5,16 +5,12 @@
 
 	<insert id="insertPost" parameterType="InsertPostDTO">
 		call insert_post(
-		#{postDTO.p_user_id, jdbcType=NUMERIC},
-		#{postDTO.p_exhibition_id,
-		jdbcType=NUMERIC},
-		#{postDTO.p_category,
-		jdbcType=NUMERIC},
-		#{postDTO.p_title, jdbcType=VARCHAR},
-		#{postDTO.p_content,
-		jdbcType=CLOB},
-		#{postDTO.p_reply_id,
-		jdbcType=NUMERIC}
+			#{postDTO.p_user_id, jdbcType=NUMERIC},
+			#{postDTO.p_exhibition_id, jdbcType=NUMERIC},
+			#{postDTO.p_category, jdbcType=NUMERIC},
+			#{postDTO.p_title, jdbcType=VARCHAR},
+			#{postDTO.p_content, jdbcType=CLOB},
+			#{postDTO.p_reply_id, jdbcType=NUMERIC}
 		)
 	</insert>
 
@@ -29,15 +25,16 @@
 		post_id = #{postDTO.post_id}
 	</update>
 
-	<update id="deletePost" parameterType="UpdatePostDTO">
+	<update id="deletePost" parameterType="DeletePostsDTO">
 		UPDATE posts
 		SET
-		post_valid
-		= #{postDTO.post_valid},
+		post_valid = 0,
 		post_updated_at = SYSDATE
-		WHERE
-		post_id =
-		#{postDTO.post_id}
+		WHERE post_id IN
+		<foreach item="id" collection="postDTO.post_ids" open="("
+			separator="," close=")">
+			#{id}
+		</foreach>
 	</update>
 
 
@@ -93,14 +90,16 @@
 		</choose>
 	</select>
 	<select id="fetchArtCollections"
-		parameterType="FetchPostsRequestDTO"
-		resultType="FetchArtCollectionResponseDTO">
-		{ CALL fetch_artcollections(
-		#{requestDTO.p_table_name, jdbcType=VARCHAR, mode=IN},
-		#{requestDTO.p_page_size, jdbcType=NUMERIC, mode=IN},
-		#{requestDTO.p_page_number, jdbcType=NUMERIC, mode=IN}
-		) }
-	</select>
+        parameterType="FetchPostsRequestDTO"
+        resultType="FetchArtCollectionResponseDTO">
+    { CALL fetch_artcollections(
+        #{p_table_name, jdbcType=VARCHAR, mode=IN},
+        #{p_search_title, jdbcType=VARCHAR, mode=IN},
+        #{p_page_size, jdbcType=NUMERIC, mode=IN},
+        #{p_page_number, jdbcType=NUMERIC, mode=IN}
+    ) }
+</select>
+
 
 
 </mapper>
