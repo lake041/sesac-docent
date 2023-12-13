@@ -10,7 +10,7 @@ import { Search, Trash2 } from "lucide-react";
 
 import { PostsTableCheckbox } from "./components/PostTableCheckbox";
 import { PostsTableData } from "./components/PostsTableData";
-import { searchPosts } from "apis/requests";
+import { deletePosts, searchPosts } from "apis/requests";
 import { cn } from "utils/tailwind-merge";
 import api from "apis/api";
 
@@ -87,6 +87,7 @@ const AdminInquiry = () => {
         };
       });
 
+      console.log(updatedPosts);
       setLastPage(updatedPosts[0].v_last_page);
       setPosts(updatedPosts);
     };
@@ -128,7 +129,9 @@ const AdminInquiry = () => {
 
   const totalClickHandler = (event) => {
     setAllChecked(event.target.checked);
-    setCheckedPosts(event.target.checked ? posts.map((post) => post.id) : []);
+    setCheckedPosts(
+      event.target.checked ? posts.map((post) => post.v_post_id) : []
+    );
   };
 
   const handleNextPageGroup = () => {
@@ -152,6 +155,13 @@ const AdminInquiry = () => {
 
   const postClickHandler = (postId) => {
     navigate(`/${type}/post/${postId}`);
+  };
+
+  const deletePostHandler = async (event) => {
+    event.preventDefault();
+    console.log(checkedPosts);
+    const response = await deletePosts(checkedPosts);
+    console.log(response);
   };
 
   return (
@@ -201,7 +211,10 @@ const AdminInquiry = () => {
             <p className="text-indigo-500 text-lg font-semibold">
               {checkedPosts.length >= 1 && `${checkedPosts.length}개 선택`}
             </p>
-            <button className="flex gap-1 font-semibold">
+            <button
+              className="flex gap-1 font-semibold"
+              onClick={deletePostHandler}
+            >
               <Trash2 color="rgb(244 63 94)" />
               <p className="text-rose-500 text-lg">삭제하기</p>
             </button>
@@ -266,7 +279,7 @@ const AdminInquiry = () => {
                   />
                   <PostsTableData
                     type="date"
-                    data={post.v_post_date}
+                    data={post.v_post_updated_at}
                     onClick={() => postClickHandler(post.v_post_id)}
                   />
                 </tr>

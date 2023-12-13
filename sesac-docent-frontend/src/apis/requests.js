@@ -30,3 +30,16 @@ export const searchPosts = async (
     throw error;
   }
 };
+
+export const deletePosts = async (postIds) => {
+  try {
+    const URI = `/posts/delete`;
+    const response = await api.post(URI, postIds);
+    console.log(URI);
+    console.log(response.data);
+
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
