@@ -13,5 +13,5 @@ public class FetchPostsRequestDTO {
 	private String p_post_status;
 	
 	//temp
-	private String table_name;
+	private String p_table_name;
 }

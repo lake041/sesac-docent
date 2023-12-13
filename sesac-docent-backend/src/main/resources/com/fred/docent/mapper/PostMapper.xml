@@ -93,27 +93,13 @@
 	</select>
 	<select id="fetchArtCollections"
 		parameterType="FetchPostsRequestDTO"
-		resultMap="ArtCollectionsResultMap">
+		resultType="FetchArtCollectionResponseDTO">
 		{ CALL fetch_artcollections(
-		#{tableName, jdbcType=VARCHAR, mode=IN},
-		#{pageSize, jdbcType=NUMERIC, mode=IN},
-		#{pageNumber, jdbcType=NUMERIC, mode=IN}
+		#{requestDTO.p_table_name, jdbcType=VARCHAR, mode=IN},
+		#{requestDTO.p_page_size, jdbcType=NUMERIC, mode=IN},
+		#{requestDTO.p_page_number, jdbcType=NUMERIC, mode=IN}
 		) }
 	</select>
-
-	<!-- Result Map 정의 -->
-	<resultMap id="ArtCollectionsResultMap"
-		type="FetchPostsResponseDTO">
-		<result property="v_post_rank" column="post_rank" />
-		<result property="v_post_id" column="post_id" />
-		<result property="v_post_title" column="post_title" />
-		<result property="v_post_views" column="post_views" />
-		<result property="v_post_updated_at" column="post_updated_at" />
-		<result property="v_user_id" column="user_id" />
-		<result property="v_user_name" column="user_name" />
-		<result property="v_post_likes" column="post_likes" />
-		<result property="v_last_page" column="post_last_page" />
-	</resultMap>
 
 
 </mapper>

@@ -81,11 +81,12 @@ public class PostController {
 		}
 	}
 
-	@GetMapping(value = "/list2/{table_name}", produces = MediaType.APPLICATION_JSON_VALUE)
+	@GetMapping(value = "/listup/{p_table_name}/{p_page_size}/{p_page_number}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<FetchArtCollectionResponseDTO>> fetchArtCollections(
-
-			@PathVariable("table_name") String tablename) {
-		FetchPostsRequestDTO requestDTO = FetchPostsRequestDTO.builder().table_name(tablename).build();
+			@PathVariable("p_table_name") String tablename, @PathVariable("p_page_size") int pageSize,
+			@PathVariable("p_page_number") int pageNumber) {
+		FetchPostsRequestDTO requestDTO = FetchPostsRequestDTO.builder().p_table_name(tablename).p_page_size(pageSize)
+				.p_page_number(pageNumber).build();
 		List<FetchArtCollectionResponseDTO> postsResponse = postsService.fetchArtCollections(requestDTO);
 		return new ResponseEntity<>(postsResponse, HttpStatus.OK);
 
