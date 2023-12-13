@@ -1,32 +1,47 @@
 import { useEffect, useState } from "react";
-import { useLocation, useParams } from "react-router-dom";
-import sanitize from "dompurify";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
+import * as DOMPurify from "dompurify";
 import api from "apis/api";
 import { DUMMY_REPLY } from "./DUMMY_REPLY";
 import { Reply } from "./Reply";
 import { useAppSelector } from "store/store";
+import { deletePosts } from "apis/requests";
+import { numberToDate } from "utils/format-date";
 
 export const Post = ({ categoryKOR, categoryENG, categoryNUM }) => {
   const [data, setData] = useState();
   const [sortType, setSortType] = useState("popular");
-  const [like, setLike] = useState(false);
   const [newReply, setNewReply] = useState("");
   const params = useParams();
   const postId = params.postId;
+  const navigate = useNavigate();
 
-  const state = useAppSelector((state) => state.authReducer);
+  // const state = useAppSelector((state) => state.authReducer);
 
   useEffect(() => {
     (async () => {
       console.log(`/posts/details/${postId}/${categoryNUM}`);
       const response = await api.get(`/posts/details/${postId}/${categoryNUM}`);
       setData(response.data);
+
+      console.log(response.data);
     })();
   }, [categoryNUM, postId]);
 
   const submitHandler = (event) => {
     event.preventDefault();
     console.log(newReply);
+  };
+
+  const updateHandler = () => {
+    navigate(`/${categoryENG}/post/${postId}/edit`);
+  };
+
+  const deleteHandler = async () => {
+    const response = await deletePosts([data.post_id]);
+    if (response === "Post delete successfully") {
+      navigate(`/${categoryENG}`);
+    }
   };
 
   return (
@@ -45,35 +60,62 @@ export const Post = ({ categoryKOR, categoryENG, categoryNUM }) => {
               제목
             </label>
             <p className="border border-black w-11/12 h-12 px-4 py-2 text-xl">
-              {categoryKOR}
+              {data?.post_title}
+            </p>
+          </div>
+        </div>
+        <div className="w-full flex flex-col gap-4">
+          <div className="w-full flex gap-2">
+            <label
+              htmlFor="title"
+              className="w-1/12 max-w-[1300px] h-12 px-4 py-2 font-bold flex justify-center items-center border border-black"
+            >
+              글쓴이
+            </label>
+            <p className="border border-black w-11/12 h-12 px-4 py-2 text-xl">
+              {data?.user_name}
+            </p>
+          </div>
+        </div>
+        <div className="w-full flex flex-col gap-4">
+          <div className="w-full flex gap-2">
+            <label
+              htmlFor="title"
+              className="w-1/12 max-w-[1300px] h-12 px-4 py-2 font-bold flex justify-center items-center border border-black"
+            >
+              작성일
+            </label>
+            <p className="border border-black w-11/12 h-12 px-4 py-2 text-xl">
+              {data?.post_created_at && numberToDate(data?.post_created_at)}
             </p>
           </div>
         </div>
         {/* 본문영역 */}
         <div className="w-full border border-black p-5">
-          {data?.content && (
+          {data?.post_content && (
             <div
               style={{
-                width: "60vw",
+                width: "100%",
                 whiteSpace: "normal",
               }}
               dangerouslySetInnerHTML={{
-                __html: sanitize(String(data?.content)),
+                __html: DOMPurify.sanitize(String(data?.post_content)),
               }}
             />
           )}
         </div>
         {/* 버튼영역 (글쓴이만 볼 수 있도록) */}
-        <div className="mt-2 w-full flex justify-end gap-2">
+        {data?.post}
+        <div className="w-full flex justify-end gap-2">
           <button
-            style={{ marginTop: "50px" }}
             className="w-fit h-fit px-4 py-2 border border-black text-lg font-bold hover:bg-black hover:text-white transition"
+            onClick={updateHandler}
           >
             수정
           </button>
           <button
-            style={{ marginTop: "50px" }}
             className="w-fit h-fit px-4 py-2 border border-black text-lg font-bold hover:bg-rose-500 text-rose-500 hover:text-white transition"
+            onClick={deleteHandler}
           >
             삭제
           </button>

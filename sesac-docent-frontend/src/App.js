@@ -26,6 +26,9 @@ import InquiryWrite from "pages/board/InquiryWrite";
 import ReviewBoard from "pages/board/ReviewBoard";
 import ReviewPost from "pages/board/ReviewPost";
 import ReviewWrite from "pages/board/ReviewWrite";
+import NoticeUpdate from "pages/board/NoticeUpdate";
+import InquiryUpdate from "pages/board/InquiryUpdate";
+import ReviewUpdate from "pages/board/ReviewUpdate";
 
 const adminRoutes = [
   { name: "user", component: <AdminUser /> },
@@ -53,6 +56,7 @@ const router = createBrowserRouter([
           { index: true, element: <NoticeBoard /> },
           { path: "page/:pageNumber", element: <NoticeBoard /> },
           { path: "post/:postId", element: <NoticePost /> },
+          { path: "post/:postId/edit", element: <NoticeUpdate /> },
           { path: "write", element: <NoticeWrite /> },
         ],
       },
@@ -62,6 +66,7 @@ const router = createBrowserRouter([
           { index: true, element: <InquiryBoard /> },
           { path: "page/:pageNumber", element: <InquiryBoard /> },
           { path: "post/:postId", element: <InquiryPost /> },
+          { path: "post/:postId/edit", element: <InquiryUpdate /> },
           { path: "write", element: <InquiryWrite /> },
         ],
       },
@@ -71,6 +76,7 @@ const router = createBrowserRouter([
           { index: true, element: <ReviewBoard /> },
           { path: "page/:pageNumber", element: <ReviewBoard /> },
           { path: "post/:postId", element: <ReviewPost /> },
+          { path: "post/:postId/edit", element: <ReviewUpdate /> },
           { path: "write", element: <ReviewWrite /> },
         ],
       },
