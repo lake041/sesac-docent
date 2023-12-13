@@ -7,8 +7,8 @@ export default function Example() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // 예시 URL입니다. 실제 URL과 요청 방식은 서버 구성에 따라 다를 수 있습니다.
-        const response = await fetch(`http://yourserver.com/api/${activeTable}`);
+        
+        const response = await fetch(`http://localhost/posts/listup/${p_table_name}/${p_page_size}/${p_page_number}`);
         if (!response.ok) {
           throw new Error('Network response was not ok');
         }
@@ -29,7 +29,7 @@ export default function Example() {
           <div>
             <p>{item.galleryName}</p>
             <p>{item.location}</p>
-            {/* 기타 gallery 필드 */}
+            {/*출력필드 작성*/}
           </div>
         );
       case 'exhibition':
@@ -37,7 +37,7 @@ export default function Example() {
           <div>
             <p>{item.exhibitionName}</p>
             <p>{item.description}</p>
-            {/* 기타 exhibition 필드 */}
+            {/*출력필드 작성*/}
           </div>
         );
       case 'author':
@@ -45,7 +45,7 @@ export default function Example() {
           <div>
             <p>{item.authorName}</p>
             <p>{item.biography}</p>
-            {/* 기타 author 필드 */}
+            {/*출력필드 작성*/}
           </div>
         );
       case 'work':
@@ -53,7 +53,7 @@ export default function Example() {
           <div>
             <p>{item.workTitle}</p>
             <p>{item.year}</p>
-            {/* 기타 work 필드 */}
+            {/*출력필드 작성*/}
           </div>
         );
       default:
