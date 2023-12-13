@@ -97,15 +97,10 @@
 		parameterType="FetchPostsRequestDTO"
 		resultType="FetchArtCollectionResponseDTO">
 		{ CALL fetch_artcollections(
-		#{requestDTO.p_table_name,
-		jdbcType=VARCHAR},
-		#{requestDTO.p_page_size, jdbcType=NUMERIC},
-		#{requestDTO.p_page_number, jdbcType=NUMERIC}
+		#{requestDTO.p_table_name, jdbcType=VARCHAR, mode=IN},
+		#{requestDTO.p_page_size, jdbcType=NUMERIC, mode=IN},
+		#{requestDTO.p_page_number, jdbcType=NUMERIC, mode=IN}
 		) }
-
-		<!-- SELECT * FROM TABLE(fetch_artcollections( #{requestDTO.p_table_name, 
-			jdbcType=VARCHAR}, #{requestDTO.p_page_size, jdbcType=NUMERIC}, #{requestDTO.p_page_number, 
-			jdbcType=NUMERIC} )) -->
 	</select>
 
 
