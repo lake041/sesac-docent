@@ -16,13 +16,13 @@ export const Post = ({ categoryKOR, categoryENG, categoryNUM }) => {
 
   const state = useAppSelector((state) => state.authReducer);
 
-  // useEffect(() => {
-  //   (async () => {
-  //     console.log(`/posts/details/${postId}/${categoryNUM}`);
-  //     const response = await api.get(`/posts/details/${postId}/${categoryNUM}`);
-  //     setData(response.data);
-  //   })();
-  // }, [categoryNUM, postId]);
+  useEffect(() => {
+    (async () => {
+      console.log(`/posts/details/${postId}/${categoryNUM}`);
+      const response = await api.get(`/posts/details/${postId}/${categoryNUM}`);
+      setData(response.data);
+    })();
+  }, [categoryNUM, postId]);
 
   const submitHandler = (event) => {
     event.preventDefault();

@@ -23,13 +23,16 @@ export const Write = ({ categoryKOR, categoryENG, categoryNUM }) => {
   };
 
   const handleSubmit = async () => {
-    const response = await api.post("/posts/insert", {
-      title,
-      content,
-      category: 1,
-    });
-    console.log(response);
-    console.log(response.data);
+    const body = {
+      p_category: categoryNUM,
+      p_title: title,
+      p_content: content,
+    };
+    // const response = await api.post("/posts/insert", {
+    //   category: categoryNUM,
+    // });
+    // console.log(response);
+    // console.log(response.data);
   };
 
   return (

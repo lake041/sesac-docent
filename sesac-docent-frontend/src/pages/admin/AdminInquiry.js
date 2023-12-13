@@ -88,7 +88,6 @@ const AdminInquiry = () => {
         };
       });
 
-      console.log(updatedPosts);
       setLastPage(updatedPosts[0].v_last_page);
       setPosts(updatedPosts);
     };
@@ -166,9 +165,10 @@ const AdminInquiry = () => {
 
   const deletePostHandler = async (event) => {
     event.preventDefault();
-    console.log(checkedPosts);
     const response = await deletePosts(checkedPosts);
-    console.log(response);
+    if (response === "Post delete successfully") {
+      window.location.reload();
+    }
   };
 
   return (
