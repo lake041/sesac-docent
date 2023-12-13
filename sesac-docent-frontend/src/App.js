@@ -19,7 +19,7 @@ import { ReduxProvider } from "store/provider";
 import FindPassword from "pages/auth/FindPassword";
 import NoticeWrite from "pages/board/NoticeWrite";
 import NoticeBoard from "pages/board/NoticeBoard";
-import { NoticePost } from "pages/board/NoticePost";
+import NoticePost from "pages/board/NoticePost";
 
 const adminRoutes = [
   { name: "user", component: <AdminUser /> },
@@ -46,7 +46,16 @@ const router = createBrowserRouter([
         children: [
           { index: true, element: <NoticeBoard /> },
           { path: "page/:pageNumber", element: <NoticeBoard /> },
-          { path: "post/:postNumber", element: <NoticePost /> },
+          { path: "post/:postId", element: <NoticePost /> },
+          { path: "write", element: <NoticeWrite /> },
+        ],
+      },
+      {
+        path: "inquiry",
+        children: [
+          { index: true, element: <NoticeBoard /> },
+          { path: "page/:pageNumber", element: <NoticeBoard /> },
+          { path: "post/:postId", element: <NoticePost /> },
           { path: "write", element: <NoticeWrite /> },
         ],
       },

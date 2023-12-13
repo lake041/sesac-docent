@@ -8,7 +8,7 @@ import { cn } from "utils/tailwind-merge";
 const pageGroupSize = 10;
 const pageSize = 10;
 
-export const Board = ({ categoryKOR, categoryENG, admin }) => {
+export const Board = ({ categoryKOR, categoryENG, categoryNUM, admin }) => {
   const navigate = useNavigate();
   const params = useParams();
   const pageNumberParams = params.pageNumber;

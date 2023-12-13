@@ -14,7 +14,7 @@ const modules = {
   },
 };
 
-export const Write = ({ categoryENG, categoryKOR }) => {
+export const Write = ({ categoryKOR, categoryENG, categoryNUM }) => {
   const [content, setContent] = useState("");
   const [title, setTitle] = useState("");
 

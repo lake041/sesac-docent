@@ -86,7 +86,7 @@ public class PostController {
 	public ResponseEntity<List<FetchArtCollectionResponseDTO>> fetchArtCollections(
 			@PathVariable("p_table_name") String tablename, @PathVariable("p_page_size") int pageSize,
 			@PathVariable("p_page_number") int pageNumber) {
-		
+
 		FetchPostsRequestDTO requestDTO = FetchPostsRequestDTO.builder().p_table_name(tablename).p_page_size(pageSize)
 				.p_page_number(pageNumber).build();
 		List<FetchArtCollectionResponseDTO> postsResponse = postsService.fetchArtCollections(requestDTO);

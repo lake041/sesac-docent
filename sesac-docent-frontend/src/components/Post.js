@@ -6,54 +6,33 @@ import { DUMMY_REPLY } from "./DUMMY_REPLY";
 import { Reply } from "./Reply";
 import { useAppSelector } from "store/store";
 
-export const Post = () => {
+export const Post = ({ categoryKOR, categoryENG, categoryNUM }) => {
   const [data, setData] = useState();
   const [sortType, setSortType] = useState("popular");
   const [like, setLike] = useState(false);
   const [newReply, setNewReply] = useState("");
   const params = useParams();
   const postId = params.postId;
-  const location = useLocation();
-  const categoryENG = location.state && location.state.categoryENG;
-  const categoryKOR = location.state && location.state.categoryKOR;
 
   const state = useAppSelector((state) => state.authReducer);
 
-  useEffect(() => {
-    (async () => {
-      setLike(true);
-    })();
-  }, []);
-
   // useEffect(() => {
   //   (async () => {
-  //     const response = await api.get(`/${categoryENG}/posts/${postId}`);
+  //     console.log(`/posts/details/${postId}/${categoryNUM}`);
+  //     const response = await api.get(`/posts/details/${postId}/${categoryNUM}`);
   //     setData(response.data);
   //   })();
-  // }, [categoryENG, postId]);
-
-  const heartClickHandler = () => {
-    setLike(!like);
-  };
+  // }, [categoryNUM, postId]);
 
   const submitHandler = (event) => {
     event.preventDefault();
     console.log(newReply);
   };
 
-  // const submitHandler = (event) => {
-  //   event.preventDefault();
-  //   console.log(newReply);
-  //   async () => {
-  //     const response = await api.post("/posts/insert", {
-  //       category: 5,
-  //       username: state.name.
-  //     });
-  //   };
-  // };
-
   return (
     <div className="w-full h-full flex flex-col justify-center items-center p-5 my-20 gap-4">
+      {/* title 영역 */}
+      <p className="text-4xl font-semibold">{categoryKOR}</p>
       {/* post 영역 */}
       <div className="w-full max-w-[1000px] px-10 py-5 rounded-xl bg-white flex flex-col justify-center items-center gap-6">
         {/* 제목영역 */}
@@ -72,8 +51,7 @@ export const Post = () => {
         </div>
         {/* 본문영역 */}
         <div className="w-full border border-black p-5">
-          본문 영역
-          {/* {data?.content && (
+          {data?.content && (
             <div
               style={{
                 width: "60vw",
@@ -83,7 +61,7 @@ export const Post = () => {
                 __html: sanitize(String(data?.content)),
               }}
             />
-          )} */}
+          )}
         </div>
         {/* 버튼영역 (글쓴이만 볼 수 있도록) */}
         <div className="mt-2 w-full flex justify-end gap-2">
@@ -91,13 +69,13 @@ export const Post = () => {
             style={{ marginTop: "50px" }}
             className="w-fit h-fit px-4 py-2 border border-black text-lg font-bold hover:bg-black hover:text-white transition"
           >
-            취소
+            수정
           </button>
           <button
             style={{ marginTop: "50px" }}
-            className="w-fit h-fit px-4 py-2 border border-black text-lg font-bold hover:bg-black hover:text-white transition"
+            className="w-fit h-fit px-4 py-2 border border-black text-lg font-bold hover:bg-rose-500 text-rose-500 hover:text-white transition"
           >
-            등록
+            삭제
           </button>
         </div>
       </div>

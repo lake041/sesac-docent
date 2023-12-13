@@ -34,7 +34,7 @@ export const searchPosts = async (
 export const deletePosts = async (postIds) => {
   try {
     const URI = `/posts/delete`;
-    const response = await api.post(URI, postIds);
+    const response = await api.post(URI, { post_ids: postIds });
     console.log(URI);
     console.log(response.data);
 

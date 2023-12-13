@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import {
   Link,
+  useLocation,
   useNavigate,
   useParams,
   useSearchParams,
@@ -154,7 +155,13 @@ const AdminInquiry = () => {
   };
 
   const postClickHandler = (postId) => {
-    navigate(`/${type}/post/${postId}`);
+    navigate(`/${type}/post/${postId}`, {
+      state: {
+        categoryENG: "inquiry",
+        categoryKOR: "1:1 문의",
+        categoryNUM: "3",
+      },
+    });
   };
 
   const deletePostHandler = async (event) => {
@@ -212,7 +219,7 @@ const AdminInquiry = () => {
               {checkedPosts.length >= 1 && `${checkedPosts.length}개 선택`}
             </p>
             <button
-              className="flex gap-1 font-semibold"
+              className="flex gap-1 font-semibold cursor-pointer"
               onClick={deletePostHandler}
             >
               <Trash2 color="rgb(244 63 94)" />
