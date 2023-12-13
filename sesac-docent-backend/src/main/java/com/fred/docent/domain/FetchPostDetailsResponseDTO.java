@@ -1,13 +1,12 @@
 package com.fred.docent.domain;
 
 import java.util.Date;
-
 import lombok.Data;
 
 @Data
 public class FetchPostDetailsResponseDTO {
 
-	// category 1
+    // 공통 필드
     private Long postId;
     private String userName;
     private Integer postValid;
@@ -17,7 +16,7 @@ public class FetchPostDetailsResponseDTO {
     private Date postCreatedAt;
     private Date postUpdatedAt;
 
-    // category 2
+    // 카테고리 2 전용 필드
     private String exhibitionName;
     private String exhibitionDescription;
     private Date exhibitionStartDate;
@@ -26,10 +25,11 @@ public class FetchPostDetailsResponseDTO {
     private String exhibitionUrl;
     private Integer postLikes;
 
-    // category 3
+    // 카테고리 3 전용 필드
     private String replyUserName;
     private Integer replyPostValid;
     private String replyPostTitle;
     private String replyPostContent;
     private Date replyPostCreatedAt;
+
 }
