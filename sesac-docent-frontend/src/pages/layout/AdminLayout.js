@@ -1,5 +1,5 @@
 import { createContext, useEffect, useState } from "react";
-import { Outlet } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 
 import { AdminHeader } from "pages/layout/components/AdminHeader";
 import { AdminSidebar } from "pages/layout/components/AdminSidebar";
@@ -8,12 +8,14 @@ import { useDispatch } from "react-redux";
 import { useAppSelector } from "store/store";
 import { login } from "store/features/auth-slice";
 import api from "apis/api";
+import { ModalProvider } from "pages/admin/modals/modal-provider";
 
 export const MenuContext = createContext();
 
 const AdminLayout = () => {
   const dispatch = useDispatch();
   const state = useAppSelector((state) => state.authReducer);
+  const navigate = useNavigate();
 
   const hasValidSessionId = () => {
     const sessionId = document.cookie
@@ -38,20 +40,30 @@ const AdminLayout = () => {
           authority: role,
           userId,
         } = response.data;
+        if (role !== "ROLE_ADMIN") {
+          navigate("/");
+        }
         dispatch(login({ email, name, role, userId }));
       } catch (error) {
         console.error("Error fetching login info:", error);
       }
     };
+    // if (state.role !== "ROLE_ADMIN") {
+    //   navigate("/");
+    // }
 
     fetchLoginInfo();
-  }, [dispatch, state.email]);
+  }, [dispatch, state.email, navigate]);
 
   const [menuClicked, setMenuClicked] = useState(false);
 
   const menuClickHandler = () => {
     setMenuClicked(!menuClicked);
   };
+
+  useEffect(() => {
+    console.log(state.role);
+  }, [navigate, state.role]);
 
   return (
     <MenuContext.Provider value={{ menuClicked, menuClickHandler }}>
@@ -67,6 +79,7 @@ const AdminLayout = () => {
           height: "calc(100vh - 80px)",
         }}
       >
+        <ModalProvider />
         <Outlet />
       </div>
     </MenuContext.Provider>
