@@ -1,36 +1,40 @@
 import { HomeCard } from "./HomeCard";
 
-export const HomeCardList = ({ cards, dummyCards }) => {
+export const HomeCardList = ({ cards, category }) => {
+
   const propertyMappings = {
     galleries: {
       imgProperty: 'gallery_img',
       titleProperty: 'gallery_name',
-      descProperty: 'gallery_describe',
+      descProperty: 'gallery_location',
     },
     exhibitions: {
-      imgProperty: 'gallery_img',
-      titleProperty: 'gallery_title',
-      descProperty: 'gallery_describe',
+      imgProperty: 'exhibition_img',
+      titleProperty: 'exhibition_name',
+      descProperty: 'exhibition_description',
     },
     authors: {
-      imgProperty: 'gallery_img',
-      titleProperty: 'gallery_title',
-      descProperty: 'gallery_describe',
+      imgProperty: 'author_img',
+      titleProperty: 'author_name',
+      descProperty: 'author_description',
     },
     works: {
-      imgProperty: 'gallery_img',
-      titleProperty: 'gallery_title',
-      descProperty: 'gallery_describe',
+      imgProperty: 'work_img',
+      titleProperty: 'work_name',
+      descProperty: 'work_description',
     },
   }
+
+  const currentMapping = propertyMappings[category];
+
   return (
     <div className="flex justify-between">
-      {dummyCards.map((card, index) => (
+      {cards.map((card, index) => (
         <HomeCard
           key={index}
-          src={card.src}
-          title={card.title}
-          desc={card.desc}
+          src={card[currentMapping.imgProperty]}
+          title={card[currentMapping.titleProperty]}
+          desc={card[currentMapping.descProperty]}
         />
       ))}
     </div>
