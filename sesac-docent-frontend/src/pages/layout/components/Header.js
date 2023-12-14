@@ -47,7 +47,7 @@ export const Header = () => {
           navFixed ? "w-full block h-[160px]" : "w-full hidden h-[124px]"
         )}
       ></div>
-      <div className={cn("w-full", navFixed && "fixed top-0")}>
+      <div className={cn("w-full bg-white", navFixed && "fixed top-0 z-50")}>
         <div className="w-full min-h-[96px] bg-white flex justify-center border-b border-black border-solid">
           <div className="w-full max-w-[1300px] flex justify-between items-center mx-10">
             <Link to="/" className="flex items-center my-4 select-none">
@@ -62,12 +62,12 @@ export const Header = () => {
         <nav className="w-full min-h-[64px] flex justify-center border-b border-black border-solid bg-white">
           <div className="w-full max-w-[1300px] flex justify-between mx-10">
             <div className="flex items-center gap-8">
-              <LowerHeaderLink link="#" text="공지사항" />
-              <LowerHeaderLink link="#" text="갤러리" />
-              <LowerHeaderLink link="#" text="전시 일정" />
-              <LowerHeaderLink link="#" text="작품 정보" />
-              <LowerHeaderLink link="#" text="관람객 후기" />
-              <LowerHeaderLink link="#" text="1:1 문의" />
+              <LowerHeaderLink link="/notice" text="공지사항" />
+              <LowerHeaderLink link="/gallery" text="갤러리" />
+              <LowerHeaderLink link="/exhibition" text="전시 일정" />
+              <LowerHeaderLink link="/artwork" text="작품 정보" />
+              <LowerHeaderLink link="/review" text="관람객 후기" />
+              <LowerHeaderLink link="/inquiry" text="1:1 문의" />
             </div>
             <div className="flex items-center lg:text-lg md:text-sm">
               <p>

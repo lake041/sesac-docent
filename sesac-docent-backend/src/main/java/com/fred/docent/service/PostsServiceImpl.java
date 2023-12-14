@@ -5,11 +5,14 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.fred.docent.domain.DeletePostsDTO;
+import com.fred.docent.domain.FetchArtCollectionResponseDTO;
 import com.fred.docent.domain.FetchPostDetailsRequestDTO;
 import com.fred.docent.domain.FetchPostDetailsResponseDTO;
 import com.fred.docent.domain.FetchPostsRequestDTO;
 import com.fred.docent.domain.FetchPostsResponseDTO;
 import com.fred.docent.domain.InsertPostDTO;
+import com.fred.docent.domain.UpdatePostDTO;
 import com.fred.docent.mapper.PostMapper;
 
 import lombok.extern.log4j.Log4j;
@@ -27,8 +30,20 @@ public class PostsServiceImpl implements PostsService {
 
 	@Override
 	public void insertPost(InsertPostDTO postDTO) {
-		log.info("Inserting post: " + postDTO);
+		log.info("Inserting post: " + postDTO.getP_title());
 		postMapper.insertPost(postDTO);
+	}
+
+	@Override
+	public void updatePost(UpdatePostDTO postDTO) {
+		log.info("Updating post: " + postDTO.getPost_title());
+		postMapper.updatePost(postDTO);
+	}
+
+	@Override
+	public void deletePost(DeletePostsDTO postDTO) {
+		log.info("delete post: " + postDTO.getPost_ids());
+		postMapper.deletePost(postDTO);
 	}
 
 	@Override
@@ -41,5 +56,11 @@ public class PostsServiceImpl implements PostsService {
 	public FetchPostDetailsResponseDTO fetchPostDetails(FetchPostDetailsRequestDTO requestDTO) {
 		log.info("Fetching post details for post ID: " + requestDTO.getPost_Id());
 		return postMapper.fetchPostDetails(requestDTO);
+	}
+
+	@Override
+	public List<FetchArtCollectionResponseDTO> fetchArtCollections(FetchPostsRequestDTO requestDTO) {
+		log.info("Fetching posts with request: " + requestDTO);
+		return postMapper.fetchArtCollections(requestDTO);
 	}
 }

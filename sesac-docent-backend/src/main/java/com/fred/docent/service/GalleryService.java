@@ -14,8 +14,8 @@ import lombok.extern.log4j.Log4j;
 @Service
 @Log4j
 public class GalleryService {
-	
-	private final GalleryMapper mapper;
+
+  private final GalleryMapper mapper;
 
 	@Autowired
 	public GalleryService(GalleryMapper mapper) {
