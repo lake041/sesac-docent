@@ -28,7 +28,7 @@ export const HomeCardList = ({ cards, category }) => {
   const currentMapping = propertyMappings[category];
 
   return (
-    <div className="flex justify-between">
+    <div className="flex justify-between">     
       {cards.map((card, index) => (
         <HomeCard
           key={index}

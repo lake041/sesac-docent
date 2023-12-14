@@ -16,7 +16,7 @@ export const HomeCardBox = ({ category }) => {
   };
 
   useEffect(() => {
-    fetch(`http://localhost/posts/listup/${category}/10/1`)
+    fetch(`http://localhost:3000/posts/listup/${category}/10/1`)
       .then((response) => response.json())
       .then((data) => {
         // 데이터에서 무작위로 4개의 항목을 선택
@@ -49,6 +49,7 @@ export const HomeCardBox = ({ category }) => {
       </div>
       <HomeCardList
         cards={cards}
+        category={category}
       />
     </div>
   );
