@@ -30,19 +30,19 @@ public class PostsServiceImpl implements PostsService {
 
 	@Override
 	public void insertPost(InsertPostDTO postDTO) {
-		log.info("Inserting post: " + postDTO);
+		log.info("Inserting post: " + postDTO.getP_title());
 		postMapper.insertPost(postDTO);
 	}
-	
+
 	@Override
 	public void updatePost(UpdatePostDTO postDTO) {
-		log.info("Updating post: " + postDTO);
+		log.info("Updating post: " + postDTO.getPost_title());
 		postMapper.updatePost(postDTO);
 	}
-	
+
 	@Override
 	public void deletePost(DeletePostsDTO postDTO) {
-		log.info("delete post: " + postDTO);
+		log.info("delete post: " + postDTO.getPost_ids());
 		postMapper.deletePost(postDTO);
 	}
 
@@ -53,8 +53,9 @@ public class PostsServiceImpl implements PostsService {
 	}
 
 	@Override
-	public FetchPostDetailsResponseDTO fetchPostDetails(FetchPostDetailsRequestDTO requestDTO) {
-		log.info("Fetching post details for post ID: " + requestDTO.getPost_Id());
+	public List<FetchPostDetailsResponseDTO> fetchPostDetails(FetchPostDetailsRequestDTO requestDTO) {
+		log.info("Fetching post details for post ID: " + requestDTO.getP_post_id());
+
 		return postMapper.fetchPostDetails(requestDTO);
 	}
 

@@ -13,6 +13,7 @@ import lombok.extern.log4j.Log4j;
 @Service
 @Log4j
 public class GalleryService {
+
 	private final GalleryMapper mapper;
 
 	@Autowired
@@ -21,19 +22,29 @@ public class GalleryService {
 	}
 
 	public boolean insert(GalleryDTO dto) {
-		log.info("Insert gallery: " + dto);
-		boolean flag = mapper.insertGallery(dto) == 1;
-		return flag;
+//		log.info("Insert gallery: " + dto);
+		boolean insertFlag = mapper.insertGallery(dto) == 1;
+		return insertFlag;
 	}
-	
+
 	public List<GalleryDTO> getList(GalleryDTO dto) {
-		log.info("Get list of gallery: " + dto);
+//		log.info("Get list of gallery: " + dto);
 		return mapper.list(dto);
 	}
-	
+
 	public void invalidate(String gallery_name) {
-	     mapper.invalidate(gallery_name);
+		mapper.invalidate(gallery_name);
 	}
-	
+
+	public boolean update(GalleryDTO dto) {
+		try {
+			int result = mapper.update(dto);
+			log.info("Update result: " + result);
+			return result == 1;
+		} catch (Exception e) {
+			log.error("Update failed: " + e.getMessage());
+			return false;
+		}
+	}
 
 }
